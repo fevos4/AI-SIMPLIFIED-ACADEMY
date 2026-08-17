@@ -1,0 +1,130 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  user
+  admin
+  super_admin
+}
+
+enum SourceType {
+  self_hosted
+  embed
+}
+
+enum VideoFormat {
+  landscape
+  portrait
+}
+
+enum PurchaseStatus {
+  pending_verification
+  verified
+  rejected
+}
+
+model User {
+  id             String    @id @default(uuid()) @db.Uuid
+  name           String
+  email          String    @unique
+  password_hash  String
+  email_verified Boolean   @default(false)
+  otp_code_hash  String?
+  otp_expires_at DateTime? @db.Timestamptz
+  role           Role      @default(user)
+  created_at     DateTime  @default(now()) @db.Timestamptz
+
+  created_categories CourseCategory[] @relation("CategoryCreator")
+  created_lessons    CourseLesson[]   @relation("LessonCreator")
+  uploaded_videos    CourseVideo[]    @relation("VideoUploader")
+  purchases          CoursePurchase[] @relation("UserPurchases")
+  reviewed_purchases CoursePurchase[] @relation("PurchaseReviewer")
+
+  @@map("users")
+}
+
+model CourseCategory {
+  id               String   @id @default(uuid()) @db.Uuid
+  name             String
+  description      String?
+  cover_image_path String?
+  price            Decimal  @db.Decimal
+  coming_soon      Boolean  @default(false)
+  position         Int
+  created_by       String   @db.Uuid
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  creator User           @relation("CategoryCreator", fields: [created_by], references: [id])
+  lessons CourseLesson[]
+  purchases CoursePurchase[]
+
+  @@map("course_categories")
+}
+
+model CourseLesson {
+  id          String   @id @default(uuid()) @db.Uuid
+  category_id String   @db.Uuid
+  name        String
+  description String?
+  published   Boolean  @default(false)
+  position    Int
+  created_by  String   @db.Uuid
+  created_at  DateTime @default(now()) @db.Timestamptz
+
+  category CourseCategory @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  creator  User           @relation("LessonCreator", fields: [created_by], references: [id])
+  videos   CourseVideo[]
+
+  @@map("course_lessons")
+}
+
+model CourseVideo {
+  id               String      @id @default(uuid()) @db.Uuid
+  lesson_id        String      @db.Uuid
+  title            String
+  description      String?
+  source_type      SourceType
+  file_path        String?
+  embed_url        String?
+  thumbnail_path   String?
+  format           VideoFormat @default(landscape)
+  is_free          Boolean     @default(false)
+  downloadable     Boolean     @default(false)
+  duration_seconds Int?
+  position         Int
+  uploaded_by      String      @db.Uuid
+  created_at       DateTime    @default(now()) @db.Timestamptz
+  updated_at       DateTime    @updatedAt @db.Timestamptz
+
+  lesson   CourseLesson @relation(fields: [lesson_id], references: [id], onDelete: Cascade)
+  uploader User         @relation("VideoUploader", fields: [uploaded_by], references: [id])
+
+  @@map("course_videos")
+}
+
+model CoursePurchase {
+  id                 String         @id @default(uuid()) @db.Uuid
+  user_id            String         @db.Uuid
+  category_id        String         @db.Uuid
+  reference_number   String         @unique
+  amount_claimed     Decimal        @db.Decimal
+  receipt_image_path String?
+  status             PurchaseStatus @default(pending_verification)
+  rejection_reason   String?
+  reviewed_by        String?        @db.Uuid
+  reviewed_at        DateTime?      @db.Timestamptz
+  created_at         DateTime       @default(now()) @db.Timestamptz
+
+  user     User           @relation("UserPurchases", fields: [user_id], references: [id])
+  category CourseCategory @relation(fields: [category_id], references: [id])
+  reviewer User?          @relation("PurchaseReviewer", fields: [reviewed_by], references: [id])
+
+  @@map("course_purchases")
+}
