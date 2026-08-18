@@ -43,7 +43,7 @@ function LoginForm() {
   };
 
   return (
-    <div style={{ backgroundColor: '#fdf9f2', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'Inter', sans-serif", color: '#24201a' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
       <PublicNavbar />
 
       <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '5rem 1.5rem' }}>
@@ -51,23 +51,36 @@ function LoginForm() {
           style={{
             width: '100%',
             maxWidth: '440px',
-            backgroundColor: '#ffffff',
-            borderRadius: '14px',
-            border: '1px solid #ecdfc4',
-            boxShadow: '0 8px 24px rgba(36, 32, 26, 0.06)',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '0px',
+            border: '1px solid rgba(25, 21, 16, 0.2)',
             padding: '2.5rem 2rem',
           }}
         >
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#24201a', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+          <div
+            style={{
+              fontSize: '0.8rem',
+              fontWeight: '700',
+              color: '#A63A2C',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              marginBottom: '0.5rem',
+              fontFamily: "'IBM Plex Sans', sans-serif",
+            }}
+          >
+            ACCOUNT ACCESS
+          </div>
+
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.85rem', fontWeight: '700', color: '#191510', margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>
             Welcome Back
           </h2>
-          <p style={{ color: '#6b6151', fontSize: '0.92rem', margin: '0 0 1.75rem 0' }}>
+          <p style={{ color: '#55503F', fontSize: '0.95rem', margin: '0 0 2rem 0', lineHeight: '1.5', fontFamily: "'IBM Plex Sans', sans-serif" }}>
             Log in to access your purchased courses and learning dashboard.
           </p>
 
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.5rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Email Address *
               </label>
               <input
@@ -78,23 +91,26 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ecdfc4',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '0px',
+                  border: '1.5px solid #191510',
+                  backgroundColor: '#F7F3EA',
+                  color: '#191510',
                   fontSize: '0.95rem',
                   outline: 'none',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   boxSizing: 'border-box',
                 }}
               />
             </div>
 
-            <div style={{ marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: '700', color: '#24201a', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: '600', color: '#191510', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Password *
                 </label>
-                <span style={{ fontSize: '0.78rem', color: '#6b6151' }}>
-                  Forgot? <span style={{ color: '#9a8e73', fontStyle: 'italic' }}>Contact support</span>
+                <span style={{ fontSize: '0.78rem', color: '#9A9284' }}>
+                  Forgot? <span style={{ color: '#9A9284', fontStyle: 'italic' }}>Contact support</span>
                 </span>
               </div>
               <input
@@ -105,18 +121,21 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ecdfc4',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '0px',
+                  border: '1.5px solid #191510',
+                  backgroundColor: '#F7F3EA',
+                  color: '#191510',
                   fontSize: '0.95rem',
                   outline: 'none',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   boxSizing: 'border-box',
                 }}
               />
             </div>
 
             {error && (
-              <div style={{ padding: '0.85rem', backgroundColor: '#fde8eb', border: '1px solid #e94f6b', borderRadius: '8px', color: '#e94f6b', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '600' }}>
+              <div style={{ padding: '0.85rem', backgroundColor: '#F7F3EA', border: '1.5px solid #A63A2C', borderRadius: '0px', color: '#A63A2C', fontSize: '0.88rem', marginBottom: '1.5rem', fontWeight: '500' }}>
                 {error}
               </div>
             )}
@@ -127,25 +146,24 @@ function LoginForm() {
               style={{
                 width: '100%',
                 padding: '0.9rem',
-                backgroundColor: '#e94f6b',
-                color: '#ffffff',
+                backgroundColor: '#191510',
+                color: '#F7F3EA',
                 border: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
+                borderRadius: '0px',
+                fontWeight: '500',
                 fontSize: '0.95rem',
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'IBM Plex Sans', sans-serif",
                 cursor: loading ? 'not-allowed' : 'pointer',
-                textTransform: 'uppercase',
-                boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+                transition: 'background-color 0.15s ease',
                 marginBottom: '1.5rem',
               }}
             >
               {loading ? 'Logging in...' : 'Log In'}
             </button>
 
-            <div style={{ textAlign: 'center', fontSize: '0.88rem', color: '#6b6151' }}>
+            <div style={{ textAlign: 'center', fontSize: '0.9rem', color: '#55503F', fontFamily: "'IBM Plex Sans', sans-serif" }}>
               Don't have an account?{' '}
-              <Link href={`/signup${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} style={{ color: '#e94f6b', fontWeight: '700', textDecoration: 'none' }}>
+              <Link href={`/signup${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} style={{ color: '#A63A2C', fontWeight: '600', textDecoration: 'none' }}>
                 Sign up
               </Link>
             </div>
@@ -159,7 +177,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Loading login form...</div>}>
+    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center', backgroundColor: '#F7F3EA', color: '#191510' }}>Loading login form...</div>}>
       <LoginForm />
     </Suspense>
   );

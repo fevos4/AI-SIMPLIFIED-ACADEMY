@@ -31,10 +31,10 @@ export default function PreviewGridClient({ categories }: PreviewGridClientProps
   );
 
   return (
-    <div style={{ backgroundColor: '#fdf9f2', minHeight: '100vh', fontFamily: "'Inter', sans-serif", color: '#24201a' }}>
+    <div style={{ backgroundColor: '#F7F3EA', minHeight: '100vh', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
       <PublicNavbar />
 
-      <main style={{ padding: '3.5rem 2.5rem', maxWidth: '1280px', margin: '0 auto' }}>
+      <main style={{ padding: '4rem 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header & Search Bar */}
         <div
           style={{
@@ -47,13 +47,13 @@ export default function PreviewGridClient({ categories }: PreviewGridClientProps
         >
           <div
             style={{
-              fontSize: '0.85rem',
+              fontSize: '0.8rem',
               fontWeight: '700',
-              color: '#e94f6b',
-              letterSpacing: '1.2px',
+              color: '#A63A2C',
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
               marginBottom: '0.5rem',
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'IBM Plex Sans', sans-serif",
             }}
           >
             ALL COURSES & CATEGORIES
@@ -62,15 +62,15 @@ export default function PreviewGridClient({ categories }: PreviewGridClientProps
             style={{
               fontSize: '2.8rem',
               fontWeight: '700',
-              color: '#24201a',
+              color: '#191510',
               margin: '0 0 1rem 0',
               fontFamily: "'Space Grotesk', sans-serif",
-              letterSpacing: '-0.5px',
+              letterSpacing: '-0.02em',
             }}
           >
             Explore AI Academy Catalog
           </h1>
-          <p style={{ color: '#6b6151', fontSize: '1.1rem', maxWidth: '600px', margin: '0 0 2rem 0', lineHeight: '1.5' }}>
+          <p style={{ color: '#55503F', fontSize: '1.1rem', maxWidth: '600px', margin: '0 0 2rem 0', lineHeight: '1.6' }}>
             Browse our full catalog of structured AI categories. Select any category to preview lessons and sample free videos.
           </p>
 
@@ -82,8 +82,8 @@ export default function PreviewGridClient({ categories }: PreviewGridClientProps
                 left: '1.2rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                fontSize: '1.1rem',
-                color: '#9a8e73',
+                fontSize: '1rem',
+                color: '#9A9284',
               }}
             >
               🔍
@@ -95,14 +95,14 @@ export default function PreviewGridClient({ categories }: PreviewGridClientProps
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.95rem 1.25rem 0.95rem 3.2rem',
-                borderRadius: '8px',
-                border: '1px solid #ecdfc4',
-                fontSize: '1rem',
+                padding: '0.85rem 1.25rem 0.85rem 3.2rem',
+                borderRadius: '0px',
+                border: '1.5px solid #191510',
+                fontSize: '0.95rem',
                 outline: 'none',
-                backgroundColor: '#ffffff',
-                boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
-                transition: 'all 0.2s ease',
+                backgroundColor: '#F7F3EA',
+                color: '#191510',
+                fontFamily: "'IBM Plex Sans', sans-serif",
                 boxSizing: 'border-box',
               }}
             />
@@ -115,24 +115,22 @@ export default function PreviewGridClient({ categories }: PreviewGridClientProps
             style={{
               padding: '4rem 2rem',
               textAlign: 'center',
-              backgroundColor: '#ffffff',
-              borderRadius: '14px',
-              border: '1px solid #ecdfc4',
-              boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+              backgroundColor: '#F7F3EA',
+              border: '1px solid rgba(25, 21, 16, 0.2)',
             }}
           >
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔎</div>
-            <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#24201a', margin: '0 0 0.5rem 0', fontFamily: "'Space Grotesk', sans-serif" }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🔎</div>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#191510', margin: '0 0 0.5rem 0', fontFamily: "'Space Grotesk', sans-serif" }}>
               No categories found
             </h3>
-            <p style={{ color: '#6b6151', margin: 0 }}>Try searching for a different course name or keyword.</p>
+            <p style={{ color: '#55503F', margin: 0 }}>Try searching for a different course name or keyword.</p>
           </div>
         ) : (
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-              gap: '2rem',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '1.75rem',
             }}
           >
             {filteredCategories.map((cat, index) => (

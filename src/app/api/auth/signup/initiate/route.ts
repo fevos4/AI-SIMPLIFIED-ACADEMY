@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       where: { email: trimmedEmail },
     });
 
-    if (existingUser) {
+    if (existingUser && existingUser.email_verified) {
       return NextResponse.json({ error: 'An account with this email already exists. Log in instead?' }, { status: 400 });
     }
 
@@ -27,17 +27,30 @@ export async function POST(req: Request) {
     const otpHash = await bcrypt.hash(rawOtp, 10);
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
-    await prisma.user.create({
-      data: {
-        email: trimmedEmail,
-        name: defaultName,
-        password_hash: '',
-        email_verified: false,
-        role: 'user',
-        otp_code_hash: otpHash,
-        otp_expires_at: otpExpiresAt,
-      },
-    });
+    if (existingUser && !existingUser.email_verified) {
+      // Unverified user from prior abandoned signup - update OTP code & expires_at
+      await prisma.user.update({
+        where: { id: existingUser.id },
+        data: {
+          otp_code_hash: otpHash,
+          otp_expires_at: otpExpiresAt,
+          ...(name && name.trim() ? { name: name.trim() } : {}),
+        },
+      });
+    } else {
+      // Create new unverified user record
+      await prisma.user.create({
+        data: {
+          email: trimmedEmail,
+          name: defaultName,
+          password_hash: '',
+          email_verified: false,
+          role: 'user',
+          otp_code_hash: otpHash,
+          otp_expires_at: otpExpiresAt,
+        },
+      });
+    }
 
     await sendOtpEmail(trimmedEmail, rawOtp);
 

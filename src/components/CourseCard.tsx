@@ -12,36 +12,15 @@ interface CourseCardProps {
   price: number;
   lessonCount?: number;
   videoCount?: number;
+  completedVideos?: number;
+  totalVideosCount?: number;
+  progressStatus?: 'locked' | 'in_progress' | 'completed';
   position?: number;
   comingSoon?: boolean;
   isPurchased?: boolean;
   isPending?: boolean;
   targetUrl?: string;
 }
-
-// Soft pastel tints cycling pink/mint/yellow presets for category covers
-const COVER_STYLES = [
-  {
-    bg: '#fde8eb', // soft pastel pink
-    iconColor: '#e94f6b',
-    icon: '🤖',
-  },
-  {
-    bg: '#e6f8f3', // soft pastel mint
-    iconColor: '#05b98a',
-    icon: '⚡',
-  },
-  {
-    bg: '#fff7e6', // soft pastel yellow
-    iconColor: '#b45309',
-    icon: '🧠',
-  },
-  {
-    bg: '#fde8eb', // soft pastel pink
-    iconColor: '#e94f6b',
-    icon: '✨',
-  },
-];
 
 export default function CourseCard({
   id,
@@ -51,14 +30,34 @@ export default function CourseCard({
   price,
   lessonCount = 0,
   videoCount = 0,
+  completedVideos = 0,
+  totalVideosCount = 0,
+  progressStatus,
   position = 1,
   comingSoon = false,
   isPurchased = false,
   isPending = false,
   targetUrl,
 }: CourseCardProps) {
-  const stylePreset = COVER_STYLES[(position - 1) % COVER_STYLES.length];
   const href = targetUrl || (comingSoon ? '#' : `/preview/${id}`);
+
+  // Determine effective status
+  let effectiveStatus: 'locked' | 'in_progress' | 'completed' | 'none' = 'none';
+  if (progressStatus) {
+    effectiveStatus = progressStatus;
+  } else if (isPurchased) {
+    if (completedVideos > 0 && totalVideosCount > 0 && completedVideos >= totalVideosCount) {
+      effectiveStatus = 'completed';
+    } else if (completedVideos > 0) {
+      effectiveStatus = 'in_progress';
+    }
+  } else if (!isPending && !comingSoon) {
+    effectiveStatus = 'locked';
+  }
+
+  const isCompleted = effectiveStatus === 'completed';
+  const isInProgress = effectiveStatus === 'in_progress';
+  const isLocked = effectiveStatus === 'locked';
 
   return (
     <Link
@@ -73,12 +72,11 @@ export default function CourseCard({
     >
       <div
         style={{
-          borderRadius: '14px',
+          borderRadius: '0px',
           overflow: 'hidden',
-          backgroundColor: '#ffffff',
-          border: '1px solid #ecdfc4',
-          boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
-          transition: 'all 0.25s ease',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid rgba(25, 21, 16, 0.2)',
+          transition: 'all 0.2s ease',
           display: 'flex',
           flexDirection: 'column',
           height: '340px',
@@ -87,33 +85,52 @@ export default function CourseCard({
         }}
         onMouseEnter={(e) => {
           if (!comingSoon || targetUrl) {
-            e.currentTarget.style.transform = 'translateY(-4px)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(36, 32, 26, 0.08)';
+            e.currentTarget.style.borderColor = '#191510';
             const arrow = e.currentTarget.querySelector('.card-arrow') as HTMLElement;
             if (arrow) {
-              arrow.style.transform = 'translateX(3px)';
-              arrow.style.backgroundColor = '#e94f6b';
-              arrow.style.color = '#ffffff';
+              if (isCompleted) {
+                arrow.style.backgroundColor = '#3F6B4A';
+                arrow.style.color = '#F7F3EA';
+                arrow.style.borderColor = '#3F6B4A';
+              } else if (isInProgress) {
+                arrow.style.backgroundColor = '#C98A2E';
+                arrow.style.color = '#F7F3EA';
+                arrow.style.borderColor = '#C98A2E';
+              } else {
+                arrow.style.backgroundColor = '#A63A2C';
+                arrow.style.color = '#F7F3EA';
+                arrow.style.borderColor = '#A63A2C';
+              }
             }
           }
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 1px 2px rgba(36, 32, 26, 0.04)';
+          e.currentTarget.style.borderColor = 'rgba(25, 21, 16, 0.2)';
           const arrow = e.currentTarget.querySelector('.card-arrow') as HTMLElement;
           if (arrow) {
-            arrow.style.transform = 'translateX(0)';
-            arrow.style.backgroundColor = '#fdf9f2';
-            arrow.style.color = '#24201a';
+            if (isCompleted) {
+              arrow.style.backgroundColor = '#F7F3EA';
+              arrow.style.color = '#3F6B4A';
+              arrow.style.borderColor = '#3F6B4A';
+            } else if (isInProgress) {
+              arrow.style.backgroundColor = '#F7F3EA';
+              arrow.style.color = '#C98A2E';
+              arrow.style.borderColor = '#C98A2E';
+            } else {
+              arrow.style.backgroundColor = '#F7F3EA';
+              arrow.style.color = '#191510';
+              arrow.style.borderColor = 'rgba(25, 21, 16, 0.3)';
+            }
           }
         }}
       >
-        {/* Cover Image / Art Area (~60% height) */}
+        {/* Cover Image / Art Area (~55% height) */}
         <div
           style={{
-            height: '60%',
+            height: '55%',
             position: 'relative',
-            backgroundColor: stylePreset.bg,
+            backgroundColor: '#F7F3EA',
+            borderBottom: '1px solid rgba(25, 21, 16, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -131,18 +148,23 @@ export default function CourseCard({
           ) : (
             <div
               style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '14px',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                width: '54px',
+                height: '54px',
+                borderRadius: '50%',
+                border: '1px solid #191510',
+                position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '2rem',
-                border: '1px solid rgba(236, 223, 196, 0.8)',
+                backgroundColor: '#F7F3EA',
               }}
             >
-              {stylePreset.icon}
+              <div style={{ position: 'absolute', inset: '-6px', borderRadius: '50%', border: '1px solid rgba(25, 21, 16, 0.14)' }} />
+              {isCompleted ? (
+                <span style={{ fontSize: '1.1rem', color: '#191510' }}>✓</span>
+              ) : (
+                <span style={{ fontSize: '0.9rem', color: '#191510' }}>▶</span>
+              )}
             </div>
           )}
 
@@ -151,81 +173,99 @@ export default function CourseCard({
             {comingSoon && (
               <span
                 style={{
-                  backgroundColor: '#ffd166',
-                  color: '#24201a',
-                  fontSize: '0.72rem',
-                  fontWeight: '700',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
+                  backgroundColor: '#191510',
+                  color: '#F7F3EA',
+                  fontSize: '0.7rem',
+                  fontWeight: '600',
+                  padding: '0.2rem 0.5rem',
+                  borderRadius: '0px',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.4px',
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  letterSpacing: '0.05em',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                 }}
               >
                 Coming Soon
               </span>
             )}
 
-            {isPurchased && (
+            {isCompleted && (
               <span
                 style={{
-                  backgroundColor: '#05b98a',
-                  color: '#ffffff',
-                  fontSize: '0.72rem',
-                  fontWeight: '700',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
-                  letterSpacing: '0.4px',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                ✓ Purchased
-              </span>
-            )}
-
-            {isPending && (
-              <span
-                style={{
-                  backgroundColor: '#e94f6b',
-                  color: '#ffffff',
-                  fontSize: '0.72rem',
-                  fontWeight: '700',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
-                  letterSpacing: '0.4px',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                ⏳ Pending
-              </span>
-            )}
-
-            {!isPurchased && !isPending && !comingSoon && (
-              <span
-                style={{
-                  backgroundColor: 'rgba(36, 32, 26, 0.7)',
-                  color: '#ffffff',
-                  fontSize: '0.72rem',
+                  backgroundColor: '#3F6B4A',
+                  color: '#F7F3EA',
+                  fontSize: '0.7rem',
                   fontWeight: '600',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: '0px',
+                  letterSpacing: '0.05em',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  textTransform: 'uppercase',
+                }}
+              >
+                Completed
+              </span>
+            )}
+
+            {isInProgress && (
+              <span
+                style={{
+                  color: '#C98A2E',
+                  fontSize: '0.8rem',
+                  fontWeight: '700',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                {completedVideos} / {totalVideosCount || videoCount} videos
+              </span>
+            )}
+
+            {isPending && !isCompleted && !isInProgress && (
+              <span
+                style={{
+                  backgroundColor: '#A63A2C',
+                  color: '#F7F3EA',
+                  fontSize: '0.7rem',
+                  fontWeight: '600',
+                  padding: '0.2rem 0.5rem',
+                  borderRadius: '0px',
+                  letterSpacing: '0.05em',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                }}
+              >
+                Pending
+              </span>
+            )}
+
+            {isLocked && !comingSoon && (
+              <span
+                style={{
+                  backgroundColor: '#191510',
+                  color: '#F7F3EA',
+                  fontSize: '0.7rem',
+                  fontWeight: '500',
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: '0px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
                 }}
               >
-                🔒 Locked
+                Locked
               </span>
             )}
           </div>
         </div>
 
-        {/* Bottom Panel (~40% height) */}
+        {/* Bottom Panel (~45% height) */}
         <div
           style={{
-            height: '40%',
+            height: '45%',
             padding: '1.25rem 1.4rem',
-            backgroundColor: '#ffffff',
+            backgroundColor: '#FFFFFF',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -236,18 +276,19 @@ export default function CourseCard({
             <h3
               style={{
                 margin: '0 0 0.35rem 0',
-                fontSize: '1.15rem',
+                fontSize: '1.2rem',
                 fontWeight: '700',
-                color: '#24201a',
+                color: '#191510',
                 fontFamily: "'Space Grotesk', sans-serif",
                 lineHeight: '1.25',
+                letterSpacing: '-0.01em',
               }}
             >
               {name}
             </h3>
-            <p style={{ margin: 0, fontSize: '0.85rem', color: '#6b6151', fontWeight: '500', fontFamily: "'Inter', sans-serif" }}>
-              {lessonCount} {lessonCount === 1 ? 'Lesson' : 'Lessons'}
-              {videoCount > 0 ? ` • ${videoCount} Videos` : ''}
+            <p style={{ margin: 0, fontSize: '0.85rem', color: '#9A9284', fontWeight: '400', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+              {lessonCount} {lessonCount === 1 ? 'lesson' : 'lessons'}
+              {videoCount > 0 ? ` • ${videoCount} videos` : ''}
             </p>
           </div>
 
@@ -258,37 +299,65 @@ export default function CourseCard({
               justifyContent: 'space-between',
               marginTop: '0.5rem',
               paddingTop: '0.65rem',
-              borderTop: '1px solid #ecdfc4',
+              borderTop: '1px solid rgba(25, 21, 16, 0.12)',
             }}
           >
-            {/* Clean Price */}
-            <span
-              style={{
-                fontSize: '1rem',
-                fontWeight: '700',
-                color: '#e94f6b',
-                fontFamily: "'Space Grotesk', sans-serif",
-              }}
-            >
-              {price} ETB
-            </span>
+            {/* Clean Price or Progress Link */}
+            {isCompleted ? (
+              <span
+                style={{
+                  fontSize: '0.95rem',
+                  fontWeight: '600',
+                  color: '#3F6B4A',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                }}
+              >
+                Review →
+              </span>
+            ) : isInProgress ? (
+              <span
+                style={{
+                  fontSize: '0.95rem',
+                  fontWeight: '600',
+                  color: '#C98A2E',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                }}
+              >
+                Continue →
+              </span>
+            ) : (
+              <span
+                style={{
+                  fontSize: '1.05rem',
+                  fontWeight: '700',
+                  color: '#A63A2C',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
+              >
+                {price} ETB
+              </span>
+            )}
 
-            {/* Circular Arrow Button */}
+            {/* Square Arrow Button */}
             <div
               className="card-arrow"
               style={{
                 width: '32px',
                 height: '32px',
-                borderRadius: '8px',
-                border: '1px solid #ecdfc4',
-                backgroundColor: '#fdf9f2',
-                color: '#24201a',
+                borderRadius: '0px',
+                border: isCompleted
+                  ? '1px solid #3F6B4A'
+                  : isInProgress
+                  ? '1px solid #C98A2E'
+                  : '1px solid rgba(25, 21, 16, 0.3)',
+                backgroundColor: '#F7F3EA',
+                color: isCompleted ? '#3F6B4A' : isInProgress ? '#C98A2E' : '#191510',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '0.9rem',
-                fontWeight: 'bold',
-                transition: 'all 0.2s ease',
+                fontWeight: '500',
+                transition: 'all 0.15s ease',
                 flexShrink: 0,
               }}
             >

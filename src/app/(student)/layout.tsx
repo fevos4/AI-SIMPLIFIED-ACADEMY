@@ -24,9 +24,9 @@ export default async function StudentLayout({
   const displayName = user?.name || session.email.split('@')[0];
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
       <StudentSidebar user={{ name: displayName, email: session.email }} />
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ flex: 1, minWidth: 0, backgroundColor: '#FFFFFF' }}>
         {children}
       </div>
     </div>

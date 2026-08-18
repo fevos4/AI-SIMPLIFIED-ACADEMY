@@ -1,31 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 export default function PublicNavbar() {
   const platformName = process.env.NEXT_PUBLIC_PLATFORM_NAME || 'AI SIMPLIFIED ACADEMY';
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = !isDarkMode;
-    setIsDarkMode(nextTheme);
-    if (nextTheme) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   return (
     <header
@@ -36,150 +15,150 @@ export default function PublicNavbar() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '1rem 2.5rem',
-        backgroundColor: 'rgba(253, 249, 242, 0.95)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid #ecdfc4',
+        padding: '1.25rem 2.5rem',
+        backgroundColor: '#FFFFFF',
+        borderBottom: '1px solid rgba(25, 21, 16, 0.1)',
       }}
     >
       {/* Left: Brand Logo & Wordmark */}
       <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
         <div
           style={{
-            width: '38px',
-            height: '38px',
-            backgroundColor: '#e94f6b',
-            borderRadius: '10px',
+            width: '30px',
+            height: '30px',
+            borderRadius: '50%',
+            border: '1.5px solid #191510',
+            backgroundColor: 'transparent',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#ffffff',
-            fontSize: '1.25rem',
+            color: '#191510',
+            fontSize: '0.95rem',
+            fontWeight: '600',
+            fontFamily: "'Space Grotesk', sans-serif",
+            lineHeight: 1,
           }}
         >
-          🎓
+          አ
         </div>
         <span
           style={{
-            fontSize: '1.25rem',
-            fontWeight: '700',
-            color: '#24201a',
-            letterSpacing: '-0.3px',
+            fontSize: '1.1rem',
+            fontWeight: '600',
+            color: '#191510',
+            letterSpacing: '-0.01em',
             fontFamily: "'Space Grotesk', sans-serif",
-            textTransform: 'uppercase',
           }}
         >
           {platformName}
         </span>
       </Link>
 
-      {/* Center: Nav links */}
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem', fontFamily: "'Space Grotesk', sans-serif" }}>
+      {/* Center: Nav links (Hidden on mobile via CSS style tag) */}
+      <nav className="fidel-nav-links" style={{ display: 'flex', alignItems: 'center', gap: '2rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
         <Link
           href="/"
           style={{
-            color: '#6b6151',
+            color: '#191510',
             textDecoration: 'none',
-            fontWeight: '600',
+            fontWeight: '400',
             fontSize: '0.95rem',
-            transition: 'color 0.2s ease',
+            transition: 'color 0.15s ease',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#A63A2C')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#191510')}
         >
           Home
         </Link>
         <Link
           href="/preview"
           style={{
-            color: '#6b6151',
+            color: '#191510',
             textDecoration: 'none',
-            fontWeight: '600',
+            fontWeight: '400',
             fontSize: '0.95rem',
-            transition: 'color 0.2s ease',
+            transition: 'color 0.15s ease',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#A63A2C')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#191510')}
         >
           Courses
         </Link>
         <Link
           href="/about"
           style={{
-            color: '#6b6151',
+            color: '#191510',
             textDecoration: 'none',
-            fontWeight: '600',
+            fontWeight: '400',
             fontSize: '0.95rem',
-            transition: 'color 0.2s ease',
+            transition: 'color 0.15s ease',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#A63A2C')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#191510')}
         >
           About
         </Link>
         <a
           href="#contact"
           style={{
-            color: '#6b6151',
+            color: '#191510',
             textDecoration: 'none',
-            fontWeight: '600',
+            fontWeight: '400',
             fontSize: '0.95rem',
-            transition: 'color 0.2s ease',
+            transition: 'color 0.15s ease',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#A63A2C')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#191510')}
         >
           Contact
         </a>
       </nav>
 
       {/* Right: Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontFamily: "'Space Grotesk', sans-serif" }}>
-        <button
-          onClick={toggleTheme}
-          aria-label="Toggle Theme"
-          style={{
-            background: '#ffffff',
-            border: '1px solid #ecdfc4',
-            borderRadius: '8px',
-            width: '36px',
-            height: '36px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            transition: 'all 0.2s ease',
-          }}
-          title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        >
-          {isDarkMode ? '🌙' : '☀️'}
-        </button>
-
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
         <Link
           href="/login"
           style={{
-            color: '#6b6151',
+            color: '#191510',
             textDecoration: 'none',
-            fontWeight: '600',
+            fontWeight: '500',
             fontSize: '0.95rem',
+            transition: 'color 0.15s ease',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#A63A2C')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#191510')}
         >
-          Log In
+          Log in
         </Link>
         <Link
           href="/signup"
           style={{
-            padding: '0.6rem 1.4rem',
-            backgroundColor: '#e94f6b',
-            color: '#ffffff',
-            borderRadius: '8px',
+            padding: '0.65rem 1.25rem',
+            backgroundColor: '#191510',
+            color: '#F7F3EA',
+            borderRadius: '0px',
             textDecoration: 'none',
-            fontWeight: '700',
+            fontWeight: '500',
             fontSize: '0.95rem',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 1px 2px rgba(36,32,26,0.04)',
-            transition: 'all 0.2s ease',
+            transition: 'background-color 0.15s ease',
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#A63A2C')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#191510')}
         >
-          Sign Up
+          Get started
         </Link>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .fidel-nav-links {
+            display: none !important;
+          }
+        }
+      `}</style>
     </header>
   );
 }

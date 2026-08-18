@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { Home, Play, Layers, User, LogOut, Menu, ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface SidebarProps {
   user?: {
@@ -17,10 +18,10 @@ export default function StudentSidebar({ user }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
-    { label: 'Dashboard', href: '/dashboard', icon: '🏠' },
-    { label: 'My Courses', href: '/dashboard/my-courses', icon: '▶️' },
-    { label: 'Browse', href: '/courses', icon: '📚' },
-    { label: 'Account', href: '/dashboard/account', icon: '👤' },
+    { label: 'Dashboard', href: '/dashboard', Icon: Home },
+    { label: 'My Courses', href: '/dashboard/my-courses', Icon: Play },
+    { label: 'Browse', href: '/courses', Icon: Layers },
+    { label: 'Account', href: '/dashboard/account', Icon: User },
   ];
 
   const handleLogout = async () => {
@@ -42,8 +43,8 @@ export default function StudentSidebar({ user }: SidebarProps) {
     <aside
       style={{
         width: collapsed ? '72px' : '260px',
-        backgroundColor: '#24201a',
-        color: '#ffffff',
+        backgroundColor: '#FFFFFF',
+        color: '#191510',
         height: '100vh',
         position: 'sticky',
         top: 0,
@@ -52,9 +53,9 @@ export default function StudentSidebar({ user }: SidebarProps) {
         justifyContent: 'space-between',
         transition: 'width 0.25s ease',
         zIndex: 100,
-        borderRight: '1px solid #332d25',
+        borderRight: '1px solid rgba(25, 21, 16, 0.14)',
         flexShrink: 0,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'IBM Plex Sans', sans-serif",
       }}
     >
       <div>
@@ -65,34 +66,37 @@ export default function StudentSidebar({ user }: SidebarProps) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: collapsed ? 'center' : 'space-between',
-            borderBottom: '1px solid #332d25',
+            borderBottom: '1px solid rgba(25, 21, 16, 0.14)',
           }}
         >
           {!collapsed && (
             <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
               <div
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  backgroundColor: '#e94f6b',
-                  borderRadius: '8px',
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '50%',
+                  border: '1.5px solid #191510',
+                  backgroundColor: 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#ffffff',
-                  fontSize: '1rem',
-                  fontWeight: 'bold',
+                  color: '#191510',
+                  fontSize: '0.95rem',
+                  fontWeight: '600',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  lineHeight: 1,
                 }}
               >
-                🎓
+                አ
               </div>
               <span
                 style={{
-                  color: '#ffffff',
+                  color: '#191510',
                   fontSize: '1rem',
-                  fontWeight: '700',
+                  fontWeight: '600',
                   fontFamily: "'Space Grotesk', sans-serif",
-                  letterSpacing: '-0.3px',
+                  letterSpacing: '-0.01em',
                 }}
               >
                 AI SIMPLIFIED
@@ -104,22 +108,25 @@ export default function StudentSidebar({ user }: SidebarProps) {
             style={{
               background: 'none',
               border: 'none',
-              color: '#9a8e73',
+              color: '#191510',
               cursor: 'pointer',
-              fontSize: '1.2rem',
               padding: '0.25rem',
-              borderRadius: '6px',
+              borderRadius: '0px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
             title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
-            {collapsed ? '➔' : '☰'}
+            <Menu width={20} height={20} strokeWidth={1.5} color="#191510" />
           </button>
         </div>
 
         {/* Navigation Items */}
-        <nav style={{ padding: '1.25rem 0.75rem', fontFamily: "'Space Grotesk', sans-serif" }}>
+        <nav style={{ padding: '1.25rem 0.75rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
           {navItems.map((item) => {
             const isActive = pathname === item.href || (item.href === '/courses' && pathname.startsWith('/courses/'));
+            const { Icon } = item;
 
             return (
               <Link
@@ -130,19 +137,19 @@ export default function StudentSidebar({ user }: SidebarProps) {
                   alignItems: 'center',
                   gap: '0.85rem',
                   padding: '0.75rem 1rem',
-                  borderRadius: '8px',
-                  color: isActive ? '#ffffff' : '#9a8e73',
-                  backgroundColor: isActive ? '#e94f6b' : 'transparent',
+                  borderRadius: '0px',
+                  color: isActive ? '#F7F3EA' : '#191510',
+                  backgroundColor: isActive ? '#A63A2C' : 'transparent',
                   textDecoration: 'none',
-                  fontWeight: isActive ? '700' : '600',
+                  fontWeight: isActive ? '600' : '500',
                   fontSize: '0.9rem',
                   marginBottom: '0.35rem',
                   justifyContent: collapsed ? 'center' : 'flex-start',
-                  transition: 'all 0.2s ease',
-                  boxShadow: isActive ? '0 1px 2px rgba(36, 32, 26, 0.04)' : 'none',
+                  transition: 'background-color 0.15s ease',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                 }}
               >
-                <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>
+                <Icon width={18} height={18} strokeWidth={1.75} color={isActive ? '#F7F3EA' : '#191510'} style={{ flexShrink: 0 }} />
                 {!collapsed && <span>{item.label}</span>}
               </Link>
             );
@@ -151,7 +158,7 @@ export default function StudentSidebar({ user }: SidebarProps) {
       </div>
 
       {/* Bottom User Avatar & Logout */}
-      <div style={{ padding: '1rem 0.75rem', borderTop: '1px solid #332d25' }}>
+      <div style={{ padding: '1rem 0.75rem', borderTop: '1px solid rgba(25, 21, 16, 0.14)' }}>
         {!collapsed && user && (
           <div
             style={{
@@ -159,21 +166,22 @@ export default function StudentSidebar({ user }: SidebarProps) {
               alignItems: 'center',
               gap: '0.75rem',
               padding: '0.65rem 0.75rem',
-              borderRadius: '8px',
-              backgroundColor: '#1c1914',
-              border: '1px solid #332d25',
+              borderRadius: '0px',
+              backgroundColor: '#F7F3EA',
+              border: '1px solid rgba(25, 21, 16, 0.14)',
               marginBottom: '0.75rem',
             }}
           >
             <div
               style={{
-                width: '34px',
-                height: '34px',
+                width: '32px',
+                height: '32px',
                 borderRadius: '50%',
-                backgroundColor: '#e94f6b',
-                color: '#ffffff',
+                border: '1.5px solid #191510',
+                backgroundColor: 'transparent',
+                color: '#191510',
                 fontSize: '0.82rem',
-                fontWeight: '700',
+                fontWeight: '600',
                 fontFamily: "'Space Grotesk', sans-serif",
                 display: 'flex',
                 alignItems: 'center',
@@ -184,10 +192,10 @@ export default function StudentSidebar({ user }: SidebarProps) {
               {getInitials(user.name)}
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#ffffff', fontFamily: "'Space Grotesk', sans-serif", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: '#191510', fontFamily: "'Space Grotesk', sans-serif", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {user.name}
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#9a8e73', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div style={{ fontSize: '0.75rem', color: '#9A9284', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 {user.email}
               </div>
             </div>
@@ -199,22 +207,22 @@ export default function StudentSidebar({ user }: SidebarProps) {
           style={{
             width: '100%',
             padding: '0.65rem',
-            backgroundColor: '#1c1914',
-            color: '#e94f6b',
-            border: '1px solid #332d25',
-            borderRadius: '8px',
-            fontWeight: '700',
-            fontFamily: "'Space Grotesk', sans-serif",
+            backgroundColor: '#F7F3EA',
+            color: '#A63A2C',
+            border: '1px solid rgba(25, 21, 16, 0.14)',
+            borderRadius: '0px',
+            fontWeight: '500',
+            fontFamily: "'IBM Plex Sans', sans-serif",
             cursor: 'pointer',
             fontSize: '0.85rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
-            transition: 'background-color 0.2s ease',
+            transition: 'background-color 0.15s ease',
           }}
         >
-          <span>🚪</span>
+          <LogOut width={16} height={16} color="#A63A2C" strokeWidth={1.75} />
           {!collapsed && <span>Logout</span>}
         </button>
       </div>

@@ -11,96 +11,116 @@ export default async function AdminDashboardPage() {
 
   if (!isAuth) {
     return (
-      <div style={{ backgroundColor: '#fdf9f2', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem', fontFamily: "'Inter', sans-serif", color: '#24201a' }}>
-        <main
-          style={{
-            width: '100%',
-            maxWidth: '440px',
-            backgroundColor: '#ffffff',
-            borderRadius: '14px',
-            border: '1px solid #ecdfc4',
-            boxShadow: '0 8px 24px rgba(36, 32, 26, 0.06)',
-            padding: '2.5rem 2rem',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: '#e94f6b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '1.1rem' }}>
-              🛡️
+      <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
+        <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem' }}>
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '440px',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '0px',
+              border: '1px solid rgba(25, 21, 16, 0.2)',
+              padding: '2.5rem 2rem',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  border: '1.5px solid #191510',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#191510',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
+              >
+                አ
+              </div>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.6rem', fontWeight: '700', color: '#191510', margin: 0, letterSpacing: '-0.02em' }}>
+                Admin Portal
+              </h2>
             </div>
-            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.5rem', fontWeight: '700', color: '#24201a', margin: 0 }}>
-              Admin Portal
-            </h2>
-          </div>
-          <p style={{ color: '#6b6151', fontSize: '0.92rem', margin: '0 0 1.75rem 0' }}>
-            Sign in with authorized admin credentials to manage platform content and payments.
-          </p>
+            <p style={{ color: '#55503F', fontSize: '0.92rem', margin: '0 0 1.75rem 0', lineHeight: '1.5', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+              Sign in with authorized admin credentials to manage platform content and payments.
+            </p>
 
-          <form action="/api/auth/login" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <input type="hidden" name="isAdminContext" value="true" />
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
-                Admin Email *
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                defaultValue="admin@elearning.com"
-                placeholder="admin@elearning.com"
+            <form action="/api/auth/login" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <input type="hidden" name="isAdminContext" value="true" />
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Admin Email *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  defaultValue="admin@elearning.com"
+                  placeholder="admin@elearning.com"
+                  style={{
+                    width: '100%',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Password *
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  required
+                  defaultValue="AdminPassword123!"
+                  placeholder="Enter password"
+                  style={{
+                    width: '100%',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+              <button
+                type="submit"
                 style={{
                   width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ecdfc4',
+                  padding: '0.9rem',
+                  backgroundColor: '#191510',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '0px',
+                  fontWeight: '500',
                   fontSize: '0.95rem',
-                  outline: 'none',
-                  boxSizing: 'border-box',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  cursor: 'pointer',
+                  marginTop: '0.5rem',
+                  transition: 'background-color 0.15s ease',
                 }}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
-                Password *
-              </label>
-              <input
-                type="password"
-                name="password"
-                required
-                defaultValue="AdminPassword123!"
-                placeholder="Enter password"
-                style={{
-                  width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ecdfc4',
-                  fontSize: '0.95rem',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-            <button
-              type="submit"
-              style={{
-                width: '100%',
-                padding: '0.9rem',
-                backgroundColor: '#e94f6b',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
-                fontSize: '0.95rem',
-                fontFamily: "'Space Grotesk', sans-serif",
-                cursor: 'pointer',
-                textTransform: 'uppercase',
-                boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
-                marginTop: '0.5rem',
-              }}
-            >
-              Login to Admin Dashboard
-            </button>
-          </form>
+              >
+                Login to Admin Dashboard
+              </button>
+            </form>
+          </div>
         </main>
       </div>
     );
@@ -110,12 +130,15 @@ export default async function AdminDashboardPage() {
   const pendingPurchaseCount = await prisma.coursePurchase.count({ where: { status: 'pending_verification' } });
 
   return (
-    <div style={{ backgroundColor: '#fdf9f2', minHeight: '100vh', fontFamily: "'Inter', sans-serif", color: '#24201a', padding: '2.5rem 2rem' }}>
-      <main style={{ maxWidth: '1000px', margin: '0 auto' }}>
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', borderBottom: '1px solid #ecdfc4', paddingBottom: '1.25rem' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
+      <main style={{ flex: 1, maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '3.5rem 1.5rem', boxSizing: 'border-box' }}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', borderBottom: '1px solid rgba(25, 21, 16, 0.14)', paddingBottom: '1.5rem' }}>
           <div>
-            <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif" }}>Admin Portal</h1>
-            <p style={{ margin: '0.25rem 0 0 0', color: '#6b6151', fontSize: '0.95rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: '600', color: '#A63A2C', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+              ADMINISTRATION
+            </span>
+            <h1 style={{ margin: '0.25rem 0 0 0', fontSize: '2.2rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.02em' }}>Admin Portal</h1>
+            <p style={{ margin: '0.35rem 0 0 0', color: '#55503F', fontSize: '0.95rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
               Logged in as <strong>{session.email}</strong> ({session.role})
             </p>
           </div>
@@ -123,14 +146,14 @@ export default async function AdminDashboardPage() {
             <button
               type="submit"
               style={{
-                padding: '0.6rem 1.25rem',
-                backgroundColor: '#24201a',
-                color: '#ffffff',
+                padding: '0.65rem 1.25rem',
+                backgroundColor: '#191510',
+                color: '#FFFFFF',
                 border: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
+                borderRadius: '0px',
+                fontWeight: '500',
                 fontSize: '0.88rem',
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'IBM Plex Sans', sans-serif",
                 cursor: 'pointer',
               }}
             >
@@ -139,71 +162,78 @@ export default async function AdminDashboardPage() {
           </form>
         </header>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-          <div style={{ padding: '1.75rem', border: '1px solid #ecdfc4', borderRadius: '14px', backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)' }}>
-            <h3 style={{ margin: 0, color: '#6b6151', fontSize: '0.95rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif" }}>Total Categories</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: '700', margin: '0.5rem 0 0 0', color: '#24201a', fontFamily: "'Space Grotesk', sans-serif" }}>{categoryCount}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+          <div style={{ padding: '1.75rem', border: '1px solid rgba(25, 21, 16, 0.14)', borderRadius: '0px', backgroundColor: '#FFFFFF' }}>
+            <h3 style={{ margin: 0, color: '#9A9284', fontSize: '0.82rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: "'IBM Plex Sans', sans-serif" }}>Total Categories</h3>
+            <p style={{ fontSize: '2.5rem', fontWeight: '700', margin: '0.5rem 0 0 0', color: '#191510', fontFamily: "'Space Grotesk', sans-serif" }}>{categoryCount}</p>
           </div>
 
-          <div style={{ padding: '1.75rem', border: '1px solid #ecdfc4', borderRadius: '14px', backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)' }}>
-            <h3 style={{ margin: 0, color: '#6b6151', fontSize: '0.95rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif" }}>Pending Verification Queue</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: '700', margin: '0.5rem 0 0 0', color: pendingPurchaseCount > 0 ? '#e94f6b' : '#05b98a', fontFamily: "'Space Grotesk', sans-serif" }}>
+          <div style={{ padding: '1.75rem', border: '1px solid rgba(25, 21, 16, 0.14)', borderRadius: '0px', backgroundColor: '#FFFFFF' }}>
+            <h3 style={{ margin: 0, color: '#9A9284', fontSize: '0.82rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: "'IBM Plex Sans', sans-serif" }}>Pending Verification Queue</h3>
+            <p style={{ fontSize: '2.5rem', fontWeight: '700', margin: '0.5rem 0 0 0', color: pendingPurchaseCount > 0 ? '#C98A2E' : '#3F6B4A', fontFamily: "'Space Grotesk', sans-serif" }}>
               {pendingPurchaseCount}
             </p>
           </div>
         </div>
 
         <section>
-          <h2 style={{ fontSize: '1.35rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '1.25rem' }}>Quick Management Links</h2>
+          <h2 style={{ fontSize: '1.35rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '1.25rem', letterSpacing: '-0.01em' }}>Quick Management Links</h2>
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <Link
               href="/admin/categories"
               style={{
                 padding: '0.9rem 1.5rem',
-                backgroundColor: '#24201a',
-                color: '#ffffff',
+                backgroundColor: '#191510',
+                color: '#FFFFFF',
                 textDecoration: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
+                borderRadius: '0px',
+                fontWeight: '500',
                 fontSize: '0.95rem',
-                fontFamily: "'Space Grotesk', sans-serif",
-                boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}
             >
-              📁 Manage Categories & Curriculum
+              <span>Manage Categories & Curriculum</span>
             </Link>
             <Link
               href="/admin/purchases"
               style={{
                 padding: '0.9rem 1.5rem',
-                backgroundColor: '#e94f6b',
-                color: '#ffffff',
+                backgroundColor: '#A63A2C',
+                color: '#FFFFFF',
                 textDecoration: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
+                borderRadius: '0px',
+                fontWeight: '500',
                 fontSize: '0.95rem',
-                fontFamily: "'Space Grotesk', sans-serif",
-                boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+                fontFamily: "'IBM Plex Sans', sans-serif",
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
               }}
             >
-              💳 CBE Purchase Verification Queue ({pendingPurchaseCount})
+              <span>CBE Purchase Verification Queue ({pendingPurchaseCount})</span>
             </Link>
             {session.role === 'super_admin' && (
               <Link
                 href="/admin/manage-admins"
                 style={{
                   padding: '0.9rem 1.5rem',
-                  backgroundColor: '#05b98a',
-                  color: '#ffffff',
+                  backgroundColor: '#191510',
+                  color: '#FFFFFF',
+                  border: '1px solid #191510',
                   textDecoration: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '700',
+                  borderRadius: '0px',
+                  fontWeight: '500',
                   fontSize: '0.95rem',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
                 }}
               >
-                👑 Manage Admin Accounts
+                <span>Manage Admin Accounts</span>
               </Link>
             )}
           </div>

@@ -21,27 +21,27 @@ export default async function AdminCategoriesPage() {
   });
 
   return (
-    <div style={{ backgroundColor: '#fdf9f2', minHeight: '100vh', fontFamily: "'Inter', sans-serif", color: '#24201a', padding: '2.5rem 2rem' }}>
-      <main style={{ maxWidth: '1000px', margin: '0 auto' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
+      <main style={{ flex: 1, maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '3.5rem 1.5rem', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
           <div>
             <Link
               href="/admin"
               style={{
-                color: '#e94f6b',
+                color: '#191510',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
                 marginBottom: '0.5rem',
                 textDecoration: 'none',
-                fontWeight: '700',
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: '500',
+                fontFamily: "'IBM Plex Sans', sans-serif",
                 fontSize: '0.9rem',
               }}
             >
               ← Admin Dashboard
             </Link>
-            <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h1 style={{ margin: 0, fontSize: '2.2rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.02em' }}>
               Manage Course Categories
             </h1>
           </div>
@@ -50,20 +50,19 @@ export default async function AdminCategoriesPage() {
         {/* Create Category Section */}
         <section
           style={{
-            border: '1px solid #ecdfc4',
-            borderRadius: '14px',
+            border: '1px solid rgba(25, 21, 16, 0.14)',
+            borderRadius: '0px',
             padding: '2rem',
-            marginBottom: '2.5rem',
-            backgroundColor: '#ffffff',
-            boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+            marginBottom: '3rem',
+            backgroundColor: '#FFFFFF',
           }}
         >
-          <h2 style={{ marginTop: 0, fontSize: '1.25rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '1.25rem' }}>
+          <h2 style={{ marginTop: 0, fontSize: '1.3rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '1.25rem', letterSpacing: '-0.01em' }}>
             Create New Category
           </h2>
           <form action="/api/admin/categories" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', maxWidth: '540px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Category Name *
               </label>
               <input
@@ -73,18 +72,21 @@ export default async function AdminCategoriesPage() {
                 placeholder="e.g. Physics - Grade 12"
                 style={{
                   width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ecdfc4',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '0px',
+                  border: '1.5px solid #191510',
+                  backgroundColor: '#FFFFFF',
+                  color: '#191510',
                   fontSize: '0.95rem',
                   outline: 'none',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   boxSizing: 'border-box',
                 }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Description
               </label>
               <textarea
@@ -93,20 +95,22 @@ export default async function AdminCategoriesPage() {
                 placeholder="Short overview of what students will learn in this category..."
                 style={{
                   width: '100%',
-                  padding: '0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ecdfc4',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '0px',
+                  border: '1.5px solid #191510',
+                  backgroundColor: '#FFFFFF',
+                  color: '#191510',
                   fontSize: '0.95rem',
                   outline: 'none',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   boxSizing: 'border-box',
-                  fontFamily: "'Inter', sans-serif",
                 }}
               />
             </div>
 
             <div style={{ display: 'flex', gap: '1.5rem' }}>
               <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Price (ETB) *
                 </label>
                 <input
@@ -116,17 +120,20 @@ export default async function AdminCategoriesPage() {
                   required
                   style={{
                     width: '100%',
-                    padding: '0.85rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ecdfc4',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     boxSizing: 'border-box',
                   }}
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.4rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Position
                 </label>
                 <input
@@ -135,11 +142,14 @@ export default async function AdminCategoriesPage() {
                   defaultValue={categories.length + 1}
                   style={{
                     width: '100%',
-                    padding: '0.85rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ecdfc4',
+                    padding: '0.85rem 1rem',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     boxSizing: 'border-box',
                   }}
                 />
@@ -147,8 +157,8 @@ export default async function AdminCategoriesPage() {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <input type="checkbox" name="coming_soon" id="coming_soon" value="true" style={{ width: '18px', height: '18px', accentColor: '#e94f6b' }} />
-              <label htmlFor="coming_soon" style={{ fontWeight: '700', fontSize: '0.9rem', fontFamily: "'Space Grotesk', sans-serif", color: '#24201a' }}>
+              <input type="checkbox" name="coming_soon" id="coming_soon" value="true" style={{ width: '18px', height: '18px', accentColor: '#191510' }} />
+              <label htmlFor="coming_soon" style={{ fontWeight: '500', fontSize: '0.9rem', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
                 Mark as "Coming Soon"
               </label>
             </div>
@@ -157,16 +167,14 @@ export default async function AdminCategoriesPage() {
               type="submit"
               style={{
                 padding: '0.9rem 1.5rem',
-                backgroundColor: '#e94f6b',
-                color: '#ffffff',
+                backgroundColor: '#191510',
+                color: '#FFFFFF',
                 border: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
+                borderRadius: '0px',
+                fontWeight: '500',
                 fontSize: '0.95rem',
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'IBM Plex Sans', sans-serif",
                 cursor: 'pointer',
-                boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
-                textTransform: 'uppercase',
                 alignSelf: 'flex-start',
               }}
             >
@@ -177,7 +185,7 @@ export default async function AdminCategoriesPage() {
 
         {/* Existing Categories List */}
         <section>
-          <h2 style={{ fontSize: '1.35rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '1.25rem' }}>
+          <h2 style={{ fontSize: '1.35rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", marginBottom: '1.25rem', letterSpacing: '-0.01em' }}>
             Existing Categories ({categories.length})
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -189,34 +197,35 @@ export default async function AdminCategoriesPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '1.25rem 1.5rem',
-                  border: '1px solid #ecdfc4',
-                  borderRadius: '12px',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+                  border: '1px solid rgba(25, 21, 16, 0.14)',
+                  borderRadius: '0px',
+                  backgroundColor: '#FFFFFF',
                 }}
               >
                 <div>
-                  <h3 style={{ margin: '0 0 0.35rem 0', fontSize: '1.15rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", color: '#24201a' }}>
+                  <h3 style={{ margin: '0 0 0.35rem 0', fontSize: '1.15rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", color: '#191510' }}>
                     {cat.name}
                     {cat.coming_soon && (
                       <span
                         style={{
                           marginLeft: '0.6rem',
                           padding: '0.15rem 0.5rem',
-                          backgroundColor: '#ffd166',
-                          color: '#24201a',
+                          backgroundColor: '#191510',
+                          color: '#FFFFFF',
                           fontSize: '0.75rem',
-                          borderRadius: '4px',
-                          fontWeight: '700',
-                          fontFamily: "'Space Grotesk', sans-serif",
+                          borderRadius: '0px',
+                          fontWeight: '500',
+                          fontFamily: "'IBM Plex Sans', sans-serif",
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
                         }}
                       >
                         Coming Soon
                       </span>
                     )}
                   </h3>
-                  <p style={{ margin: 0, color: '#6b6151', fontSize: '0.88rem' }}>
-                    Price: <strong style={{ color: '#e94f6b' }}>{Number(cat.price)} ETB</strong> | Lessons: {cat._count.lessons} | Position: {cat.position}
+                  <p style={{ margin: 0, color: '#55503F', fontSize: '0.88rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                    Price: <strong style={{ color: '#A63A2C', fontFamily: "'Space Grotesk', sans-serif" }}>{Number(cat.price)} ETB</strong> | Lessons: {cat._count.lessons} | Position: {cat.position}
                   </p>
                 </div>
 
@@ -225,13 +234,13 @@ export default async function AdminCategoriesPage() {
                     href={`/admin/categories/${cat.id}`}
                     style={{
                       padding: '0.6rem 1.1rem',
-                      backgroundColor: '#24201a',
-                      color: '#ffffff',
+                      backgroundColor: '#191510',
+                      color: '#FFFFFF',
                       textDecoration: 'none',
-                      borderRadius: '8px',
-                      fontWeight: '700',
+                      borderRadius: '0px',
+                      fontWeight: '500',
                       fontSize: '0.85rem',
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: "'IBM Plex Sans', sans-serif",
                     }}
                   >
                     Manage Curriculum ({cat._count.lessons})

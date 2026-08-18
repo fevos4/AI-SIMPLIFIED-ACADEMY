@@ -234,15 +234,15 @@ function SignupForm() {
 
   const getPasswordStrength = (pwd: string) => {
     if (!pwd) return { text: '', color: '', percent: 0 };
-    if (pwd.length < 8) return { text: 'Weak (min 8 chars)', color: '#e94f6b', percent: 33 };
-    if (pwd.match(/[A-Z]/) && pwd.match(/[0-9]/)) return { text: 'Strong', color: '#05b98a', percent: 100 };
-    return { text: 'Medium', color: '#ffd166', percent: 66 };
+    if (pwd.length < 8) return { text: 'Weak (min 8 chars)', color: '#A63A2C', percent: 33 };
+    if (pwd.match(/[A-Z]/) && pwd.match(/[0-9]/)) return { text: 'Strong', color: '#191510', percent: 100 };
+    return { text: 'Medium', color: '#9A9284', percent: 66 };
   };
 
   const strength = getPasswordStrength(password);
 
   return (
-    <div style={{ backgroundColor: '#fdf9f2', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'Inter', sans-serif", color: '#24201a' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', display: 'flex', flexDirection: 'column', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
       <PublicNavbar />
 
       <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem 3rem 1.5rem' }}>
@@ -250,40 +250,39 @@ function SignupForm() {
           style={{
             width: '100%',
             maxWidth: '460px',
-            backgroundColor: '#ffffff',
-            borderRadius: '14px',
-            border: '1px solid #ecdfc4',
-            boxShadow: '0 8px 24px rgba(36, 32, 26, 0.06)',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '0px',
+            border: '1px solid rgba(25, 21, 16, 0.2)',
             padding: '2.5rem 2rem',
           }}
         >
           {/* Progress Indicator */}
           <div style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#e94f6b', textTransform: 'uppercase', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.5px' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: '700', color: '#A63A2C', textTransform: 'uppercase', fontFamily: "'IBM Plex Sans', sans-serif", letterSpacing: '0.08em' }}>
                 Step {step} of 3
               </span>
-              <span style={{ fontSize: '0.85rem', color: '#6b6151', fontWeight: '600', fontFamily: "'Space Grotesk', sans-serif" }}>
+              <span style={{ fontSize: '0.85rem', color: '#9A9284', fontWeight: '500', fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 {step === 1 ? 'Email Entry' : step === 2 ? 'Verification' : 'Profile'}
               </span>
             </div>
-            <div style={{ height: '6px', backgroundColor: '#fdf9f2', border: '1px solid #ecdfc4', borderRadius: '3px', overflow: 'hidden', display: 'flex' }}>
-              <div style={{ width: step === 1 ? '33.3%' : step === 2 ? '66.6%' : '100%', backgroundColor: '#e94f6b', transition: 'width 0.3s ease' }} />
+            <div style={{ height: '4px', backgroundColor: 'rgba(25, 21, 16, 0.1)', borderRadius: '0px', overflow: 'hidden', display: 'flex' }}>
+              <div style={{ width: step === 1 ? '33.3%' : step === 2 ? '66.6%' : '100%', backgroundColor: '#A63A2C', transition: 'width 0.3s ease' }} />
             </div>
           </div>
 
           {/* STEP 1 FORM */}
           {step === 1 && (
             <form onSubmit={handleInitiate}>
-              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#24201a', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#191510', margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>
                 Create Your Account
               </h2>
-              <p style={{ color: '#6b6151', fontSize: '0.92rem', margin: '0 0 1.75rem 0' }}>
+              <p style={{ color: '#55503F', fontSize: '0.92rem', margin: '0 0 1.75rem 0', fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: '1.5' }}>
                 Enter your email address to receive your 6-digit verification code.
               </p>
 
               <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.5rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Email Address *
                 </label>
                 <input
@@ -295,20 +294,23 @@ function SignupForm() {
                   style={{
                     width: '100%',
                     padding: '0.85rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ecdfc4',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#F7F3EA',
+                    color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     boxSizing: 'border-box',
                   }}
                 />
               </div>
 
               {step1Error && (
-                <div style={{ padding: '0.85rem', backgroundColor: '#fde8eb', border: '1px solid #e94f6b', borderRadius: '8px', color: '#e94f6b', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '600' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: '#F7F3EA', border: '1.5px solid #A63A2C', borderRadius: '0px', color: '#A63A2C', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '500' }}>
                   {step1Error}{' '}
                   {step1Error.includes('Log in') && (
-                    <Link href={`/login${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} style={{ color: '#e94f6b', fontWeight: 'bold', textDecoration: 'underline', marginLeft: '0.25rem' }}>
+                    <Link href={`/login${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} style={{ color: '#A63A2C', fontWeight: '600', textDecoration: 'underline', marginLeft: '0.25rem' }}>
                       Log in instead?
                     </Link>
                   )}
@@ -321,25 +323,24 @@ function SignupForm() {
                 style={{
                   width: '100%',
                   padding: '0.9rem',
-                  backgroundColor: '#e94f6b',
-                  color: '#ffffff',
+                  backgroundColor: '#191510',
+                  color: '#F7F3EA',
                   border: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '700',
+                  borderRadius: '0px',
+                  fontWeight: '500',
                   fontSize: '0.95rem',
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   cursor: step1Loading ? 'not-allowed' : 'pointer',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
                   marginBottom: '1.5rem',
+                  transition: 'background-color 0.15s ease',
                 }}
               >
                 {step1Loading ? 'Sending Code...' : 'Send Verification Code'}
               </button>
 
-              <div style={{ textAlign: 'center', fontSize: '0.88rem', color: '#6b6151' }}>
+              <div style={{ textAlign: 'center', fontSize: '0.88rem', color: '#55503F', fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 Already have an account?{' '}
-                <Link href={`/login${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} style={{ color: '#e94f6b', fontWeight: 'bold', textDecoration: 'none' }}>
+                <Link href={`/login${callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ''}`} style={{ color: '#A63A2C', fontWeight: '600', textDecoration: 'none' }}>
                   Log in
                 </Link>
               </div>
@@ -349,15 +350,15 @@ function SignupForm() {
           {/* STEP 2 FORM */}
           {step === 2 && (
             <form onSubmit={handleVerifyOtp}>
-              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#24201a', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#191510', margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>
                 Verify Your Email
               </h2>
-              <p style={{ color: '#6b6151', fontSize: '0.92rem', margin: '0 0 1.75rem 0' }}>
+              <p style={{ color: '#55503F', fontSize: '0.92rem', margin: '0 0 1.75rem 0', fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: '1.5' }}>
                 We sent a 6-digit code to <strong>{email}</strong>. Enter it below to verify.
               </p>
 
               <div style={{ marginBottom: '1.75rem' }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.75rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase', textAlign: 'center' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.75rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>
                   6-Digit OTP Code
                 </label>
                 <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
@@ -376,14 +377,14 @@ function SignupForm() {
                         width: '44px',
                         height: '50px',
                         textAlign: 'center',
-                        fontSize: '1.3rem',
+                        fontSize: '1.25rem',
                         fontWeight: '700',
                         fontFamily: "'Space Grotesk', monospace",
-                        borderRadius: '8px',
-                        border: '1px solid #ecdfc4',
+                        borderRadius: '0px',
+                        border: '1.5px solid #191510',
                         outline: 'none',
-                        backgroundColor: '#fdf9f2',
-                        color: '#24201a',
+                        backgroundColor: '#F7F3EA',
+                        color: '#191510',
                       }}
                     />
                   ))}
@@ -391,13 +392,13 @@ function SignupForm() {
               </div>
 
               {resendMessage && (
-                <div style={{ padding: '0.75rem', backgroundColor: '#e6f8f3', border: '1px solid #05b98a', borderRadius: '8px', color: '#05b98a', fontSize: '0.85rem', marginBottom: '1.5rem', textAlign: 'center', fontWeight: '600' }}>
+                <div style={{ padding: '0.75rem', backgroundColor: '#F7F3EA', border: '1.5px solid #191510', borderRadius: '0px', color: '#191510', fontSize: '0.85rem', marginBottom: '1.5rem', textAlign: 'center', fontWeight: '500' }}>
                   {resendMessage}
                 </div>
               )}
 
               {step2Error && (
-                <div style={{ padding: '0.85rem', backgroundColor: '#fde8eb', border: '1px solid #e94f6b', borderRadius: '8px', color: '#e94f6b', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '600' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: '#F7F3EA', border: '1.5px solid #A63A2C', borderRadius: '0px', color: '#A63A2C', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '500' }}>
                   {step2Error}
                 </div>
               )}
@@ -408,23 +409,22 @@ function SignupForm() {
                 style={{
                   width: '100%',
                   padding: '0.9rem',
-                  backgroundColor: '#e94f6b',
-                  color: '#ffffff',
+                  backgroundColor: '#191510',
+                  color: '#F7F3EA',
                   border: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '700',
+                  borderRadius: '0px',
+                  fontWeight: '500',
                   fontSize: '0.95rem',
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   cursor: step2Loading ? 'not-allowed' : 'pointer',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
                   marginBottom: '1.25rem',
+                  transition: 'background-color 0.15s ease',
                 }}
               >
                 {step2Loading ? 'Verifying...' : 'Verify Code'}
               </button>
 
-              <div style={{ textAlign: 'center', fontSize: '0.88rem', color: '#6b6151' }}>
+              <div style={{ textAlign: 'center', fontSize: '0.88rem', color: '#55503F', fontFamily: "'IBM Plex Sans', sans-serif" }}>
                 Didn't receive code?{' '}
                 <button
                   type="button"
@@ -433,9 +433,9 @@ function SignupForm() {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: resendTimer > 0 ? '#9a8e73' : '#e94f6b',
-                    fontWeight: 'bold',
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    color: resendTimer > 0 ? '#9A9284' : '#A63A2C',
+                    fontWeight: '600',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     cursor: resendTimer > 0 ? 'not-allowed' : 'pointer',
                     padding: 0,
                     textDecoration: 'underline',
@@ -450,15 +450,15 @@ function SignupForm() {
           {/* STEP 3 FORM */}
           {step === 3 && (
             <form onSubmit={handleComplete}>
-              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#24201a', margin: '0 0 0.5rem 0', textTransform: 'uppercase' }}>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '1.75rem', fontWeight: '700', color: '#191510', margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>
                 Complete Profile
               </h2>
-              <p style={{ color: '#6b6151', fontSize: '0.92rem', margin: '0 0 1.75rem 0' }}>
+              <p style={{ color: '#55503F', fontSize: '0.92rem', margin: '0 0 1.75rem 0', fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: '1.5' }}>
                 Set your name and password to finalize your account.
               </p>
 
               <div style={{ marginBottom: '1.25rem' }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.5rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Full Name *
                 </label>
                 <input
@@ -470,22 +470,25 @@ function SignupForm() {
                   style={{
                     width: '100%',
                     padding: '0.85rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ecdfc4',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#F7F3EA',
+                    color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     boxSizing: 'border-box',
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <label style={{ fontSize: '0.85rem', fontWeight: '700', color: '#24201a', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <label style={{ fontSize: '0.82rem', fontWeight: '600', color: '#191510', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Password *
                   </label>
                   {strength.text && (
-                    <span style={{ fontSize: '0.78rem', color: strength.color, fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif" }}>
+                    <span style={{ fontSize: '0.78rem', color: strength.color, fontWeight: '600', fontFamily: "'IBM Plex Sans', sans-serif" }}>
                       {strength.text}
                     </span>
                   )}
@@ -499,22 +502,25 @@ function SignupForm() {
                   style={{
                     width: '100%',
                     padding: '0.85rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ecdfc4',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#F7F3EA',
+                    color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     boxSizing: 'border-box',
                   }}
                 />
                 {password && (
-                  <div style={{ height: '4px', backgroundColor: '#ecdfc4', borderRadius: '2px', marginTop: '6px', overflow: 'hidden' }}>
+                  <div style={{ height: '3px', backgroundColor: 'rgba(25, 21, 16, 0.1)', borderRadius: '0px', marginTop: '6px', overflow: 'hidden' }}>
                     <div style={{ height: '100%', width: `${strength.percent}%`, backgroundColor: strength.color, transition: 'all 0.3s ease' }} />
                   </div>
                 )}
               </div>
 
               <div style={{ marginBottom: '1.5rem' }}>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#24201a', marginBottom: '0.5rem', fontFamily: "'Space Grotesk', sans-serif", textTransform: 'uppercase' }}>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', fontFamily: "'IBM Plex Sans', sans-serif", textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Confirm Password *
                 </label>
                 <input
@@ -526,17 +532,20 @@ function SignupForm() {
                   style={{
                     width: '100%',
                     padding: '0.85rem 1rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ecdfc4',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#F7F3EA',
+                    color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
                     boxSizing: 'border-box',
                   }}
                 />
               </div>
 
               {step3Error && (
-                <div style={{ padding: '0.85rem', backgroundColor: '#fde8eb', border: '1px solid #e94f6b', borderRadius: '8px', color: '#e94f6b', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '600' }}>
+                <div style={{ padding: '0.85rem', backgroundColor: '#F7F3EA', border: '1.5px solid #A63A2C', borderRadius: '0px', color: '#A63A2C', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: '500' }}>
                   {step3Error}
                 </div>
               )}
@@ -547,16 +556,15 @@ function SignupForm() {
                 style={{
                   width: '100%',
                   padding: '0.9rem',
-                  backgroundColor: '#e94f6b',
-                  color: '#ffffff',
+                  backgroundColor: '#191510',
+                  color: '#F7F3EA',
                   border: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '700',
+                  borderRadius: '0px',
+                  fontWeight: '500',
                   fontSize: '0.95rem',
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'IBM Plex Sans', sans-serif",
                   cursor: step3Loading ? 'not-allowed' : 'pointer',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 1px 2px rgba(36, 32, 26, 0.04)',
+                  transition: 'background-color 0.15s ease',
                 }}
               >
                 {step3Loading ? 'Creating Account...' : 'Create Account'}
@@ -572,7 +580,7 @@ function SignupForm() {
 
 export default function SignupPage() {
   return (
-    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Loading signup...</div>}>
+    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center', backgroundColor: '#F7F3EA', color: '#191510' }}>Loading signup...</div>}>
       <SignupForm />
     </Suspense>
   );
