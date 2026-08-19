@@ -37,8 +37,11 @@ export default async function AdminCategoryCurriculumPage({ params }: PageProps)
   const clientCategory = {
     id: category.id,
     name: category.name,
+    description: category.description,
     price: Number(category.price),
     position: category.position,
+    coming_soon: category.coming_soon,
+    cover_image_path: category.cover_image_path,
     lessons: category.lessons.map((l) => ({
       id: l.id,
       name: l.name,

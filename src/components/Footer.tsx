@@ -16,38 +16,11 @@ export default function Footer() {
           {/* Column 1: Branding & Social */}
           <div>
             <Link href="/" style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                    borderRadius: '50%',
-                    border: '1.5px solid #F7F3EA',
-                    backgroundColor: 'transparent',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#F7F3EA',
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    lineHeight: 1,
-                  }}
-                >
-                  አ
-                </div>
-                <span
-                  style={{
-                    fontSize: '1.1rem',
-                    fontWeight: '600',
-                    color: '#F7F3EA',
-                    letterSpacing: '-0.01em',
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  {platformName}
-                </span>
-              </div>
+              <img
+                src="/imgs/logo.png"
+                alt="AI Simplified Academy"
+                style={{ height: '60px', width: 'auto', objectFit: 'contain' }}
+              />
             </Link>
             <p style={{ color: '#9A9284', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1.5rem', maxWidth: '280px', fontFamily: "'IBM Plex Sans', sans-serif" }}>
               {tagline}
@@ -165,7 +138,7 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem' }}>
               <li>
-                <a href="#contact" style={{ color: '#9A9284', textDecoration: 'none', transition: 'color 0.15s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#A63A2C'} onMouseLeave={(e) => e.currentTarget.style.color = '#9A9284'}>Contact Us</a>
+                <Link href="/contact" style={{ color: '#9A9284', textDecoration: 'none', transition: 'color 0.15s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#A63A2C'} onMouseLeave={(e) => e.currentTarget.style.color = '#9A9284'}>Contact Us</Link>
               </li>
               <li>
                 <Link href="/faq" style={{ color: '#9A9284', textDecoration: 'none', transition: 'color 0.15s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#A63A2C'} onMouseLeave={(e) => e.currentTarget.style.color = '#9A9284'}>FAQ</Link>

@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { createSession } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
   try {
     let email = '';
@@ -51,23 +53,6 @@ export async function POST(req: Request) {
     }
 
     const isAdminRole = user.role === 'admin' || user.role === 'super_admin';
-
-    // Admin login separation rule:
-    // If logging in via public /login page (isAdminContext !== true), reject admin/super_admin users
-    if (!isAdminContext && isAdminRole) {
-      if (!contentType.includes('application/json')) {
-        return NextResponse.redirect(new URL('/admin?error=Please+login+via+admin+portal', req.url), 303);
-      }
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 400 });
-    }
-
-    // If logging in via /admin page (isAdminContext === true), reject non-admin users
-    if (isAdminContext && !isAdminRole) {
-      if (!contentType.includes('application/json')) {
-        return NextResponse.redirect(new URL('/admin?error=Access+denied', req.url), 303);
-      }
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 400 });
-    }
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {

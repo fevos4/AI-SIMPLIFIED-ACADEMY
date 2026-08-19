@@ -142,6 +142,7 @@ export default function CourseCard({
               src={coverImagePath.startsWith('http') || coverImagePath.startsWith('/') ? coverImagePath : `/api/storage/presigned?path=${encodeURIComponent(coverImagePath)}`}
               alt={name}
               fill
+              unoptimized
               style={{ objectFit: 'cover' }}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />

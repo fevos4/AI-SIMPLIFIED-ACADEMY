@@ -27,6 +27,107 @@ interface HeroClientProps {
   categories: any[];
 }
 
+const innerRingItems = [
+  {
+    name: 'ChatGPT',
+    color: '#10A37F',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M22.28 9.82a6 6 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9 6.07 6.07 0 0 0-10.27 2.17 6 6 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 6 6 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9 6.06 6.06 0 0 0 10.27-2.17 6 6 0 0 0 4-2.9 6.06 6.06 0 0 0-.74-7.1zM13.26 22.43a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.8.8 0 0 0 .39-.68v-6.74l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.5 4.5 0 0 1-4.49 4.5zM3.6 18.3a4.47 4.47 0 0 1-.54-3l.14.08 4.79 2.76a.8.8 0 0 0 .79 0l5.83-3.37v2.33a.08.08 0 0 1-.03.06l-4.84 2.8a4.51 4.51 0 0 1-6.14-1.66zM2.34 8.37a4.48 4.48 0 0 1 2.35-1.97v5.67a.8.8 0 0 0 .4.68l5.83 3.37-2.02 1.17a.08.08 0 0 1-.07 0L4.03 14.5a4.51 4.51 0 0 1-1.69-6.13zm16.6 3.86l-5.84-3.37 2.02-1.17a.08.08 0 0 1 .07 0l4.83 2.79a4.51 4.51 0 0 1-.66 8.14v-5.67a.79.79 0 0 0-.42-.72zm2.01-3.05l-.14-.08-4.78-2.76a.8.8 0 0 0-.79 0l-5.83 3.37V7.37a.08.08 0 0 1 .03-.06l4.84-2.8a4.51 4.51 0 0 1 6.67 4.67zM8.32 4.96a4.48 4.48 0 0 1 2.88 1.04l-.14.08-4.78 2.76a.8.8 0 0 0-.39.68v6.74l-2.02-1.17a.07.07 0 0 1-.04-.05V9.44a4.5 4.5 0 0 1 4.49-4.48zm.98 6.95l2.85-1.65 2.85 1.65v3.29l-2.85 1.65-2.85-1.65z"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Claude',
+    color: '#D97757',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Gemini',
+    color: '#1A73E8',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Antigravity',
+    color: '#A63A2C',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="3" fill="currentColor" />
+      </svg>
+    ),
+  },
+];
+
+const middleRingItems = [
+  {
+    name: 'OpenCode',
+    color: '#191510',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    ),
+  },
+  {
+    name: 'DeepSeek',
+    color: '#1E40AF',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <circle cx="11" cy="11" r="7" />
+        <line x1="21" y1="21" x2="16.5" y2="16.5" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Copilot',
+    color: '#6E40C9',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="4" y="6" width="16" height="12" rx="3" />
+        <circle cx="9" cy="12" r="1.5" fill="currentColor" />
+        <circle cx="15" cy="12" r="1.5" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Llama AI',
+    color: '#0284C7',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2V7h2v10z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Midjourney',
+    color: '#D97706',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <polygon points="12 2 2 22 22 22" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Perplexity',
+    color: '#059669',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19" />
+      </svg>
+    ),
+  },
+];
+
 export default function HeroClient({ categories }: HeroClientProps) {
   const router = useRouter();
   
@@ -220,7 +321,7 @@ export default function HeroClient({ categories }: HeroClientProps) {
           minHeight: '80vh',
         }}
       >
-        {/* Background Concentric Circles & Fidel Tiles Ring */}
+        {/* Background Concentric Circles & Fidel / AI Logos Ring */}
         <div
           className="fidel-ring-container"
           style={{
@@ -228,91 +329,163 @@ export default function HeroClient({ categories }: HeroClientProps) {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '1200px',
-            height: '1200px',
+            width: '840px',
+            height: '840px',
             pointerEvents: 'none',
             zIndex: 0,
+            filter: 'blur(0.6px)',
+            opacity: 0.85,
           }}
         >
-          {/* Inner ring 280px radius (560px diameter) */}
+          {/* Inner Ring (Radius 190px / Diameter 380px) */}
           <div
+            className="hero-inner-ring"
             style={{
               position: 'absolute',
               top: '50%',
               left: '50%',
-              width: '560px',
-              height: '560px',
-              marginTop: '-280px',
-              marginLeft: '-280px',
+              width: '380px',
+              height: '380px',
+              marginTop: '-190px',
+              marginLeft: '-190px',
               borderRadius: '50%',
-              border: '1px solid rgba(25, 21, 16, 0.1)',
+              border: '1px solid rgba(25, 21, 16, 0.12)',
             }}
-          />
-          {/* Middle ring 440px radius (880px diameter) */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '880px',
-              height: '880px',
-              marginTop: '-440px',
-              marginLeft: '-440px',
-              borderRadius: '50%',
-              border: '1px solid rgba(25, 21, 16, 0.1)',
-            }}
-          />
-          {/* Outer ring 560px radius (1120px diameter) */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '1120px',
-              height: '1120px',
-              marginTop: '-560px',
-              marginLeft: '-560px',
-              borderRadius: '50%',
-              border: '1px solid rgba(25, 21, 16, 0.1)',
-            }}
-          />
+          >
+            {innerRingItems.map((item, index) => {
+              const angle = index * (360 / innerRingItems.length);
+              const rad = (angle * Math.PI) / 180;
+              const radius = 190;
+              const x = Number((radius * Math.cos(rad)).toFixed(2));
+              const y = Number((radius * Math.sin(rad)).toFixed(2));
 
-          {/* 8 Fidel Tiles on the outer ring (radius 560px) */}
-          {['ሀ', 'ለ', 'ሐ', 'መ', 'ሠ', 'ረ', 'ሰ', 'ሸ'].map((char, index) => {
-            const angle = index * 45; // 0, 45, 90, 135, 180, 225, 270, 315
-            const rad = (angle * Math.PI) / 180;
-            const radius = 560;
-            const x = radius * Math.cos(rad);
-            const y = radius * Math.sin(rad);
+              return (
+                <div
+                  key={item.name}
+                  className="hero-inner-item"
+                  title={item.name}
+                  style={{
+                    position: 'absolute',
+                    top: `calc(50% + ${y}px)`,
+                    left: `calc(50% + ${x}px)`,
+                    transform: 'translate(-50%, -50%)',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(25, 21, 16, 0.2)',
+                    backgroundColor: '#F7F3EA',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+                  }}
+                >
+                  <span style={{ color: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{item.icon}</span>
+                </div>
+              );
+            })}
+          </div>
 
-            return (
-              <div
-                key={index}
-                style={{
-                  position: 'absolute',
-                  top: `calc(50% + ${y}px)`,
-                  left: `calc(50% + ${x}px)`,
-                  width: '34px',
-                  height: '34px',
-                  marginTop: '-17px',
-                  marginLeft: '-17px',
-                  borderRadius: '50%',
-                  border: '1px solid rgba(25, 21, 16, 0.2)',
-                  backgroundColor: '#F7F3EA',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '0.85rem',
-                  fontWeight: '500',
-                  color: '#191510',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
-                }}
-              >
-                {char}
-              </div>
-            );
-          })}
+          {/* Middle Ring (Radius 300px / Diameter 600px) */}
+          <div
+            className="hero-middle-ring"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '600px',
+              height: '600px',
+              marginTop: '-300px',
+              marginLeft: '-300px',
+              borderRadius: '50%',
+              border: '1px solid rgba(25, 21, 16, 0.12)',
+            }}
+          >
+            {middleRingItems.map((item, index) => {
+              const angle = index * (360 / middleRingItems.length);
+              const rad = (angle * Math.PI) / 180;
+              const radius = 300;
+              const x = Number((radius * Math.cos(rad)).toFixed(2));
+              const y = Number((radius * Math.sin(rad)).toFixed(2));
+
+              return (
+                <div
+                  key={item.name}
+                  className="hero-middle-item"
+                  title={item.name}
+                  style={{
+                    position: 'absolute',
+                    top: `calc(50% + ${y}px)`,
+                    left: `calc(50% + ${x}px)`,
+                    transform: 'translate(-50%, -50%)',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(25, 21, 16, 0.2)',
+                    backgroundColor: '#F7F3EA',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+                  }}
+                >
+                  <span style={{ color: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{item.icon}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Outer Ring (Radius 410px / Diameter 820px) */}
+          <div
+            className="hero-outer-ring"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '820px',
+              height: '820px',
+              marginTop: '-410px',
+              marginLeft: '-410px',
+              borderRadius: '50%',
+              border: '1px solid rgba(25, 21, 16, 0.12)',
+            }}
+          >
+            {['ሀ', 'ለ', 'ሐ', 'መ', 'ሠ', 'ረ', 'ሰ', 'ሸ'].map((char, index) => {
+              const angle = index * 45;
+              const rad = (angle * Math.PI) / 180;
+              const radius = 410;
+              const x = Number((radius * Math.cos(rad)).toFixed(2));
+              const y = Number((radius * Math.sin(rad)).toFixed(2));
+
+              return (
+                <div
+                  key={index}
+                  className="hero-outer-item"
+                  style={{
+                    position: 'absolute',
+                    top: `calc(50% + ${y}px)`,
+                    left: `calc(50% + ${x}px)`,
+                    transform: 'translate(-50%, -50%)',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(25, 21, 16, 0.2)',
+                    backgroundColor: '#F7F3EA',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    color: '#191510',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+                  }}
+                >
+                  {char}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Hero Content Container - Centered Alignment */}
@@ -329,21 +502,6 @@ export default function HeroClient({ categories }: HeroClientProps) {
             alignItems: 'center',
           }}
         >
-          {/* Eyebrow Label */}
-          <div
-            style={{
-              fontSize: '0.8rem',
-              fontWeight: '700',
-              color: '#A63A2C',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              marginBottom: '1.25rem',
-            }}
-          >
-            Twenty-six letters. One idea each.
-          </div>
-
           {/* Headline */}
           <h1
             className="fidel-hero-headline"
@@ -363,11 +521,11 @@ export default function HeroClient({ categories }: HeroClientProps) {
           {/* Subheading */}
           <p
             style={{
-              fontSize: '1.125rem',
-              color: '#55503F',
+              fontSize: '0.95rem',
+              color: '#8A8270',
               margin: '0 0 2.5rem 0',
-              fontWeight: '400',
-              lineHeight: '1.6',
+              fontWeight: '300',
+              lineHeight: '1.65',
               maxWidth: '640px',
               fontFamily: "'IBM Plex Sans', sans-serif",
             }}
@@ -558,25 +716,84 @@ export default function HeroClient({ categories }: HeroClientProps) {
           </div>
         </div>
 
-        {/* Responsive CSS for Mobile */}
-        <style jsx>{`
-          @media (max-width: 768px) {
-            .fidel-ring-container {
-              display: none !important;
+        {/* Animated Fidel & AI Logo Rings CSS */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .hero-inner-ring {
+              animation: spinCW 95s linear infinite;
             }
-            .fidel-hero-headline {
-              font-size: 40px !important;
+            .hero-inner-item {
+              animation: counterCW 95s linear infinite;
             }
-            .fidel-info-cards {
-              flex-direction: column !important;
-              align-items: center !important;
+
+            .hero-middle-ring {
+              animation: spinCCW 135s linear infinite;
             }
-            .fidel-info-cards > div {
-              width: 100% !important;
-              max-width: 300px !important;
+            .hero-middle-item {
+              animation: counterCCW 135s linear infinite;
             }
-          }
-        `}</style>
+
+            .hero-outer-ring {
+              animation: spinCW 175s linear infinite;
+            }
+            .hero-outer-item {
+              animation: counterCW 175s linear infinite;
+            }
+
+            @keyframes spinCW {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+
+            @keyframes spinCCW {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(-360deg);
+              }
+            }
+
+            @keyframes counterCW {
+              from {
+                transform: translate(-50%, -50%) rotate(0deg);
+              }
+              to {
+                transform: translate(-50%, -50%) rotate(-360deg);
+              }
+            }
+
+            @keyframes counterCCW {
+              from {
+                transform: translate(-50%, -50%) rotate(0deg);
+              }
+              to {
+                transform: translate(-50%, -50%) rotate(360deg);
+              }
+            }
+
+            @media (max-width: 768px) {
+              .fidel-ring-container {
+                display: none !important;
+              }
+              .fidel-hero-headline {
+                font-size: 40px !important;
+              }
+              .fidel-info-cards {
+                flex-direction: column !important;
+                align-items: center !important;
+              }
+              .fidel-info-cards > div {
+                width: 100% !important;
+                max-width: 300px !important;
+              }
+            }
+          `
+        }} />
       </section>
 
       {/* COURSE CARDS SECTION ("Explore Our Courses") */}

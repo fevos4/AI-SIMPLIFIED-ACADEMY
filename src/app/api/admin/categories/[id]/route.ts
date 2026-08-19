@@ -47,6 +47,16 @@ export async function PATCH(req: Request, { params }: RouteParams) {
       if (cover_image_path !== null) data.cover_image_path = (cover_image_path as string).trim() || null;
     }
 
+    if (data.cover_image_path !== undefined) {
+      const existingCategory = await prisma.courseCategory.findUnique({
+        where: { id },
+        select: { cover_image_path: true },
+      });
+      if (existingCategory?.cover_image_path && existingCategory.cover_image_path !== data.cover_image_path) {
+        await deleteStorageFile(existingCategory.cover_image_path);
+      }
+    }
+
     const updatedCategory = await prisma.courseCategory.update({
       where: { id },
       data,

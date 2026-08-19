@@ -16,6 +16,10 @@ export default async function StudentLayout({
     redirect('/login');
   }
 
+  if (session.role === 'admin' || session.role === 'super_admin') {
+    redirect('/admin');
+  }
+
   const user = await prisma.user.findUnique({
     where: { id: session.userId },
     select: { name: true, email: true },

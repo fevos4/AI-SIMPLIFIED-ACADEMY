@@ -3,40 +3,36 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Play, Layers, User, LogOut, Menu, ArrowLeft, ArrowRight } from 'lucide-react';
+import { LayoutDashboard, Layers, CreditCard, ShieldCheck, LogOut, Menu } from 'lucide-react';
 
-interface SidebarProps {
+interface AdminSidebarProps {
   user?: {
-    name: string;
     email: string;
+    role: string;
   } | null;
 }
 
-export default function StudentSidebar({ user }: SidebarProps) {
+export default function AdminSidebar({ user }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
-    { label: 'Dashboard', href: '/dashboard', Icon: Home },
-    { label: 'My Courses', href: '/dashboard/my-courses', Icon: Play },
-    { label: 'Browse', href: '/courses', Icon: Layers },
-    { label: 'Account', href: '/dashboard/account', Icon: User },
+    { label: 'Overview', href: '/admin', Icon: LayoutDashboard },
+    { label: 'Categories & Curriculum', href: '/admin/categories', Icon: Layers },
+    { label: 'Payment Queue', href: '/admin/purchases', Icon: CreditCard },
+    ...(user?.role === 'super_admin' ? [{ label: 'Manage Admins', href: '/admin/manage-admins', Icon: ShieldCheck }] : []),
   ];
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/');
+    router.push('/login');
     router.refresh();
   };
 
-  const getInitials = (nameStr?: string) => {
-    if (!nameStr) return 'U';
-    const parts = nameStr.trim().split(' ');
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return nameStr.slice(0, 2).toUpperCase();
+  const getInitials = (emailStr?: string) => {
+    if (!emailStr) return 'AD';
+    return emailStr.slice(0, 2).toUpperCase();
   };
 
   return (
@@ -70,23 +66,30 @@ export default function StudentSidebar({ user }: SidebarProps) {
           }}
         >
           {!collapsed && (
-            <Link href="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
+            <Link href="/admin" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none' }}>
               <img
                 src="/imgs/logo.png"
-                alt="AI Simplified"
+                alt="AI Simplified Admin"
                 style={{ height: '32px', width: 'auto', objectFit: 'contain' }}
               />
-              <span
-                style={{
-                  color: '#191510',
-                  fontSize: '0.95rem',
-                  fontWeight: '700',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                AI SIMPLIFIED
-              </span>
+              <div>
+                <span
+                  style={{
+                    color: '#191510',
+                    fontSize: '0.9rem',
+                    fontWeight: '700',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    letterSpacing: '-0.01em',
+                    display: 'block',
+                    lineHeight: 1.1,
+                  }}
+                >
+                  ADMIN PORTAL
+                </span>
+                <span style={{ fontSize: '0.7rem', color: '#A63A2C', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  AI Simplified
+                </span>
+              </div>
             </Link>
           )}
           <button
@@ -111,7 +114,9 @@ export default function StudentSidebar({ user }: SidebarProps) {
         {/* Navigation Items */}
         <nav style={{ padding: '1.25rem 0.75rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
           {navItems.map((item) => {
-            const isActive = pathname === item.href || (item.href === '/courses' && pathname.startsWith('/courses/'));
+            const isActive =
+              pathname === item.href ||
+              (item.href === '/admin/categories' && pathname.startsWith('/admin/categories/'));
             const { Icon } = item;
 
             return (
@@ -143,7 +148,7 @@ export default function StudentSidebar({ user }: SidebarProps) {
         </nav>
       </div>
 
-      {/* Bottom User Avatar & Logout */}
+      {/* Bottom Admin User Info & Logout */}
       <div style={{ padding: '1rem 0.75rem', borderTop: '1px solid rgba(25, 21, 16, 0.14)' }}>
         {!collapsed && user && (
           <div
@@ -164,10 +169,10 @@ export default function StudentSidebar({ user }: SidebarProps) {
                 height: '32px',
                 borderRadius: '50%',
                 border: '1.5px solid #191510',
-                backgroundColor: 'transparent',
-                color: '#191510',
-                fontSize: '0.82rem',
-                fontWeight: '600',
+                backgroundColor: '#191510',
+                color: '#FFFFFF',
+                fontSize: '0.75rem',
+                fontWeight: '700',
                 fontFamily: "'Space Grotesk', sans-serif",
                 display: 'flex',
                 alignItems: 'center',
@@ -175,14 +180,14 @@ export default function StudentSidebar({ user }: SidebarProps) {
                 flexShrink: 0,
               }}
             >
-              {getInitials(user.name)}
+              {getInitials(user.email)}
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: '#191510', fontFamily: "'Space Grotesk', sans-serif", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {user.name}
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#9A9284', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: '600', color: '#191510', fontFamily: "'Space Grotesk', sans-serif", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {user.email}
+              </div>
+              <div style={{ fontSize: '0.72rem', color: '#A63A2C', fontWeight: '600', textTransform: 'uppercase', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                {user.role}
               </div>
             </div>
           </div>

@@ -15,36 +15,22 @@ export default function PublicNavbar() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '1.25rem 2.5rem',
+        padding: '0.75rem 2.5rem',
         backgroundColor: '#FFFFFF',
         borderBottom: '1px solid rgba(25, 21, 16, 0.1)',
       }}
     >
       {/* Left: Brand Logo & Wordmark */}
-      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
-        <div
-          style={{
-            width: '30px',
-            height: '30px',
-            borderRadius: '50%',
-            border: '1.5px solid #191510',
-            backgroundColor: 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#191510',
-            fontSize: '0.95rem',
-            fontWeight: '600',
-            fontFamily: "'Space Grotesk', sans-serif",
-            lineHeight: 1,
-          }}
-        >
-          አ
-        </div>
+      <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
+        <img
+          src="/imgs/logo.png"
+          alt="AI Simplified Academy"
+          style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
+        />
         <span
           style={{
-            fontSize: '1.1rem',
-            fontWeight: '600',
+            fontSize: '1.05rem',
+            fontWeight: '700',
             color: '#191510',
             letterSpacing: '-0.01em',
             fontFamily: "'Space Grotesk', sans-serif",
@@ -98,8 +84,8 @@ export default function PublicNavbar() {
         >
           About
         </Link>
-        <a
-          href="#contact"
+        <Link
+          href="/contact"
           style={{
             color: '#191510',
             textDecoration: 'none',
@@ -111,7 +97,7 @@ export default function PublicNavbar() {
           onMouseLeave={(e) => (e.currentTarget.style.color = '#191510')}
         >
           Contact
-        </a>
+        </Link>
       </nav>
 
       {/* Right: Actions */}
@@ -152,13 +138,15 @@ export default function PublicNavbar() {
         </Link>
       </div>
 
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .fidel-nav-links {
-            display: none !important;
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media (max-width: 768px) {
+            .fidel-nav-links {
+              display: none !important;
+            }
           }
-        }
-      `}</style>
+        `
+      }} />
     </header>
   );
 }

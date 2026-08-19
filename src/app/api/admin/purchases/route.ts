@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
+import { generatePresignedGetUrl } from '@/lib/storage';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,7 +41,29 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json({ purchases });
+    const purchasesWithUrls = await Promise.all(
+      purchases.map(async (p) => {
+        let receipt_url: string | null = null;
+        if (p.receipt_image_path) {
+          try {
+            receipt_url = await generatePresignedGetUrl(p.receipt_image_path, 3600);
+          } catch (err) {
+            console.error(`Failed to generate presigned URL for receipt '${p.receipt_image_path}':`, err);
+          }
+        }
+        return {
+          ...p,
+          amount_claimed: Number(p.amount_claimed),
+          category: {
+            ...p.category,
+            price: Number(p.category.price),
+          },
+          receipt_url,
+        };
+      })
+    );
+
+    return NextResponse.json({ purchases: purchasesWithUrls });
   } catch (error) {
     console.error('Error fetching purchases:', error);
     return NextResponse.json({ error: 'Failed to fetch purchases' }, { status: 500 });

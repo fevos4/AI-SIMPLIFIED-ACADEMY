@@ -68,19 +68,19 @@ export async function POST(req: Request) {
 
     if (isJson) {
       const body = await req.json();
-      lesson_id = body.lesson_id || '';
-      category_id = body.category_id || '';
+      lesson_id = body.lesson_id || body.lessonId || '';
+      category_id = body.category_id || body.categoryId || '';
       title = body.title || '';
       description = body.description || '';
-      source_type = body.source_type || 'self_hosted';
-      file_path = body.file_path || '';
-      embed_url = body.embed_url || '';
-      thumbnail_path = body.thumbnail_path || '';
+      source_type = body.source_type || body.sourceType || 'self_hosted';
+      file_path = body.file_path || body.filePath || '';
+      embed_url = body.embed_url || body.embedUrl || '';
+      thumbnail_path = body.thumbnail_path || body.thumbnailPath || '';
       format = body.format || 'landscape';
-      is_free = Boolean(body.is_free);
+      is_free = Boolean(body.is_free ?? body.isFree);
       downloadable = Boolean(body.downloadable);
       position = body.position;
-      duration_seconds = body.duration_seconds;
+      duration_seconds = body.duration_seconds ?? body.durationSeconds;
     } else {
       const formData = await req.formData();
       lesson_id = (formData.get('lesson_id') as string) || (formData.get('lessonId') as string) || '';

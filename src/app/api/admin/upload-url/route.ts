@@ -20,15 +20,15 @@ export async function POST(req: Request) {
 
     if (isJson) {
       const body = await req.json();
-      fileName = body.fileName || body.filename || '';
-      contentType = body.contentType || 'application/octet-stream';
+      fileName = body.fileName || body.filename || body.file_name || body.name || body.originalName || '';
+      contentType = body.contentType || body.content_type || body.type || 'application/octet-stream';
     } else {
       const formData = await req.formData();
-      fileName = (formData.get('fileName') as string) || (formData.get('filename') as string) || '';
-      contentType = (formData.get('contentType') as string) || 'application/octet-stream';
+      fileName = (formData.get('fileName') as string) || (formData.get('filename') as string) || (formData.get('file_name') as string) || (formData.get('name') as string) || '';
+      contentType = (formData.get('contentType') as string) || (formData.get('content_type') as string) || 'application/octet-stream';
     }
 
-    if (!fileName) {
+    if (!fileName || !fileName.trim()) {
       return NextResponse.json({ error: 'File name is required' }, { status: 400 });
     }
 

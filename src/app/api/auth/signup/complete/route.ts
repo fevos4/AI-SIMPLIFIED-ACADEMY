@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { createSession, verifyOtpVerifiedToken, getSignupVerifiedEmail, clearSignupVerifiedCookie } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
   try {
     const { email, password, confirm_password, otp_token, name } = await req.json();

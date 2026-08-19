@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import ScrollObserver from '@/components/ScrollObserver';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'AI Simplified Academy',
@@ -11,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ scrollBehavior: 'smooth' }}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -25,6 +28,9 @@ export default function RootLayout({
             --color-muted: #9A9284;
             --color-body: #55503F;
           }
+          html {
+            scroll-behavior: smooth !important;
+          }
           body {
             font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--color-bg);
@@ -34,6 +40,18 @@ export default function RootLayout({
           }
           h1, h2, h3, h4, h5, h6, nav, .font-heading {
             font-family: 'Space Grotesk', sans-serif;
+          }
+
+          /* Smooth Scroll Reveal Animations */
+          .scroll-reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+          }
+          .scroll-reveal.is-revealed {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
           }
 
           /* Global Tactile Button Active / Click Effects */
@@ -76,6 +94,7 @@ export default function RootLayout({
         `}</style>
       </head>
       <body style={{ margin: 0, padding: 0, fontFamily: "'IBM Plex Sans', sans-serif", backgroundColor: '#FFFFFF', color: '#191510' }}>
+        <ScrollObserver />
         {children}
       </body>
     </html>

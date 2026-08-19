@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import PublicNavbar from '@/components/PublicNavbar';
 import Footer from '@/components/Footer';
+import { Eye, EyeOff } from 'lucide-react';
 export const dynamic = 'force-dynamic';
 
 function LoginForm() {
@@ -14,6 +15,7 @@ function LoginForm() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +33,7 @@ function LoginForm() {
       const data = await res.json();
 
       if (res.ok) {
-        router.push(callbackUrl);
+        router.push(data.redirectUrl || callbackUrl);
       } else {
         setError(data.error || 'Invalid email or password.');
       }
@@ -113,25 +115,48 @@ function LoginForm() {
                   Forgot? <span style={{ color: '#9A9284', fontStyle: 'italic' }}>Contact support</span>
                 </span>
               </div>
-              <input
-                type="password"
-                required
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.85rem 1rem',
-                  borderRadius: '0px',
-                  border: '1.5px solid #191510',
-                  backgroundColor: '#F7F3EA',
-                  color: '#191510',
-                  fontSize: '0.95rem',
-                  outline: 'none',
-                  fontFamily: "'IBM Plex Sans', sans-serif",
-                  boxSizing: 'border-box',
-                }}
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.85rem 2.75rem 0.85rem 1rem',
+                    borderRadius: '0px',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#F7F3EA',
+                    color: '#191510',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    boxSizing: 'border-box',
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#191510',
+                  }}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff width={18} height={18} /> : <Eye width={18} height={18} />}
+                </button>
+              </div>
             </div>
 
             {error && (

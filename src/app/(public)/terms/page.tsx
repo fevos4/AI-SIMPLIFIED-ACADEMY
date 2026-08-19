@@ -2,6 +2,8 @@ import React from 'react';
 import PublicNavbar from '@/components/PublicNavbar';
 import Footer from '@/components/Footer';
 
+export const dynamic = 'force-dynamic';
+
 export default function TermsPage() {
   const platformName = process.env.NEXT_PUBLIC_PLATFORM_NAME || 'AI Simplified Academy';
 

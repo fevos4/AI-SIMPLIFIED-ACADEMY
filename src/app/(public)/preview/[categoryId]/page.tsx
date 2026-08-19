@@ -38,5 +38,6 @@ export default async function CategoryPreviewPage({ params }: RouteParams) {
     created_at: category.created_at.toISOString(),
   };
 
-  return <CategoryPreviewClient category={plainCategory} isLoggedIn={Boolean(session)} />;
+  const isStudentLoggedIn = Boolean(session && session.role === 'user');
+  return <CategoryPreviewClient category={plainCategory} isLoggedIn={isStudentLoggedIn} />;
 }

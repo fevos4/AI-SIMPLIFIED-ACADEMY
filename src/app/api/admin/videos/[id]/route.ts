@@ -65,6 +65,16 @@ export async function PATCH(req: Request, { params }: RouteParams) {
       if (duration_seconds !== null) data.duration_seconds = Number(duration_seconds);
     }
 
+    if (data.file_path !== undefined) {
+      const existingVideo = await prisma.courseVideo.findUnique({
+        where: { id },
+        select: { file_path: true },
+      });
+      if (existingVideo?.file_path && existingVideo.file_path !== data.file_path) {
+        await deleteStorageFile(existingVideo.file_path);
+      }
+    }
+
     const updatedVideo = await prisma.courseVideo.update({
       where: { id },
       data,
