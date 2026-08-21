@@ -32,33 +32,34 @@ export default async function MyCoursesPage() {
   });
 
   return (
-    <main style={{ padding: '2.5rem 2rem', maxWidth: '1280px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
-      <header style={{ marginBottom: '2.5rem' }}>
+    <main style={{ padding: '3.5rem 2.5rem', maxWidth: '1280px', margin: '0 auto', width: '100%', boxSizing: 'border-box', fontFamily: "'IBM Plex Sans', sans-serif", color: '#191510' }}>
+      <header style={{ marginBottom: '3rem' }}>
         <div
           style={{
-            fontSize: '0.85rem',
-            fontWeight: '800',
-            color: '#4F46E5',
-            letterSpacing: '1px',
+            fontSize: '0.8rem',
+            fontWeight: '700',
+            color: '#A63A2C',
+            letterSpacing: '0.1em',
             textTransform: 'uppercase',
             marginBottom: '0.5rem',
+            fontFamily: "'IBM Plex Sans', sans-serif",
           }}
         >
-          STUDENT PORTAL
+          MY ENROLLMENTS
         </div>
         <h1
           style={{
-            fontSize: '2.4rem',
-            color: '#0f172a',
-            margin: '0 0 0.5rem 0',
-            fontFamily: "'Outfit', sans-serif",
-            fontWeight: '900',
-            letterSpacing: '-0.5px',
+            fontSize: '2.5rem',
+            color: '#191510',
+            margin: '0 0 0.6rem 0',
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: '700',
+            letterSpacing: '-0.02em',
           }}
         >
           My Purchased Courses
         </h1>
-        <p style={{ color: '#64748b', margin: 0, fontSize: '1.05rem' }}>
+        <p style={{ color: '#55503F', margin: 0, fontSize: '1.05rem', fontFamily: "'IBM Plex Sans', sans-serif", lineHeight: '1.5' }}>
           Access your unlocked video categories and learning materials anytime.
         </p>
       </header>
@@ -66,34 +67,34 @@ export default async function MyCoursesPage() {
       {purchases.length === 0 ? (
         <div
           style={{
-            padding: '4rem 2rem',
+            padding: '3.5rem 2rem',
             textAlign: 'center',
-            backgroundColor: '#ffffff',
-            borderRadius: '16px',
-            border: '1.5px dashed #cbd5e1',
+            backgroundColor: '#F7F3EA',
+            borderRadius: '0px',
+            border: '1px solid rgba(25, 21, 16, 0.14)',
             maxWidth: '560px',
             margin: '2rem auto',
           }}
         >
-          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>📚</div>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.75rem 0' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📚</div>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: '#191510', margin: '0 0 0.75rem 0', fontFamily: "'Space Grotesk', sans-serif" }}>
             No purchased courses yet
           </h3>
-          <p style={{ color: '#64748b', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '2rem' }}>
+          <p style={{ color: '#55503F', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '2rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
             You haven't unlocked any course categories yet. Explore our catalog and unlock lifetime access to AI courses.
           </p>
           <Link
-            href="/courses"
+            href="/dashboard"
             style={{
               display: 'inline-block',
               padding: '0.85rem 1.75rem',
-              backgroundColor: '#4F46E5',
-              color: '#ffffff',
-              borderRadius: '10px',
-              fontWeight: '800',
+              backgroundColor: '#191510',
+              color: '#F7F3EA',
+              borderRadius: '0px',
+              fontWeight: '600',
               fontSize: '0.95rem',
               textDecoration: 'none',
-              boxShadow: '0 4px 12px rgba(79, 70, 229, 0.25)',
+              fontFamily: "'IBM Plex Sans', sans-serif",
             }}
           >
             Browse Courses

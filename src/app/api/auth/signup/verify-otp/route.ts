@@ -3,10 +3,28 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { setSignupVerifiedCookie } from '@/lib/auth';
 
+import { getClientIp, checkRateLimit } from '@/lib/rateLimit';
+
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
+    const clientIp = getClientIp(req);
+    const rate = checkRateLimit(`otp_${clientIp}`, 5, 600);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          retryAfter: rate.retryAfterSeconds,
+          message: 'Too many verification attempts. Please wait before trying again.',
+        },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rate.retryAfterSeconds) },
+        }
+      );
+    }
+
     const { email, otp_code } = await req.json();
 
     if (!email || !otp_code) {

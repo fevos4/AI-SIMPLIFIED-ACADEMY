@@ -221,10 +221,10 @@ export default function CategoryPreviewClient({ category, isLoggedIn }: Category
             >
               <div>
                 <div style={{ fontSize: '0.78rem', color: '#9A9284', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: "'IBM Plex Sans', sans-serif", marginBottom: '0.25rem' }}>
-                  Total lifetime access
+                  {category.coming_soon ? 'Course Status' : 'Total lifetime access'}
                 </div>
-                <div style={{ fontSize: '2.5rem', fontWeight: '700', color: '#A63A2C', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.02em' }}>
-                  {Number(category.price)} ETB
+                <div style={{ fontSize: category.coming_soon ? '1.8rem' : '2.5rem', fontWeight: '700', color: category.coming_soon ? '#55503F' : '#A63A2C', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.02em' }}>
+                  {category.coming_soon ? 'Coming Soon' : `${Number(category.price)} ETB`}
                 </div>
               </div>
 
@@ -241,27 +241,52 @@ export default function CategoryPreviewClient({ category, isLoggedIn }: Category
             </div>
 
             {/* Primary Action CTA Button */}
-            <Link
-              href={purchaseHref}
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '1rem',
-                backgroundColor: '#191510',
-                color: '#F7F3EA',
-                textAlign: 'center',
-                borderRadius: '0px',
-                fontWeight: '500',
-                fontSize: '1rem',
-                textDecoration: 'none',
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                marginBottom: '1rem',
-                boxSizing: 'border-box',
-                transition: 'background-color 0.15s ease',
-              }}
-            >
-              Purchase this course
-            </Link>
+            {category.coming_soon ? (
+              <div
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '1rem',
+                  backgroundColor: 'rgba(25, 21, 16, 0.08)',
+                  color: '#9A9284',
+                  textAlign: 'center',
+                  borderRadius: '0px',
+                  fontWeight: '600',
+                  fontSize: '0.95rem',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  marginBottom: '1rem',
+                  boxSizing: 'border-box',
+                  cursor: 'not-allowed',
+                  border: '1px dashed rgba(25, 21, 16, 0.2)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                Coming Soon — Enrollment Closed
+              </div>
+            ) : (
+              <Link
+                href={purchaseHref}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '1rem',
+                  backgroundColor: '#191510',
+                  color: '#F7F3EA',
+                  textAlign: 'center',
+                  borderRadius: '0px',
+                  fontWeight: '500',
+                  fontSize: '1rem',
+                  textDecoration: 'none',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  marginBottom: '1rem',
+                  boxSizing: 'border-box',
+                  transition: 'background-color 0.15s ease',
+                }}
+              >
+                Purchase this course
+              </Link>
+            )}
 
             {/* Secondary Link */}
             {!isLoggedIn && (

@@ -3,10 +3,28 @@ import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 
+import { getClientIp, checkRateLimit } from '@/lib/rateLimit';
+
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
+    const clientIp = getClientIp(req);
+    const rate = checkRateLimit(`pwd_change_${clientIp}`, 3, 600);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          retryAfter: rate.retryAfterSeconds,
+          message: 'Too many attempts. Please try again in 10 minutes.',
+        },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rate.retryAfterSeconds) },
+        }
+      );
+    }
+
     const session = await getSession(req);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -43,6 +61,14 @@ export async function POST(req: Request) {
     await prisma.user.update({
       where: { id: user.id },
       data: { password_hash: newHash },
+    });
+
+    // Revoke all other sessions for this user except current session
+    await prisma.userSession.deleteMany({
+      where: {
+        user_id: user.id,
+        id: { not: session.sessionId },
+      },
     });
 
     return NextResponse.json({ success: true, message: 'Password changed successfully' });

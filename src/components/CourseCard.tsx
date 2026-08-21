@@ -67,24 +67,26 @@ export default function CourseCard({
         color: 'inherit',
         display: 'block',
         height: '100%',
-        pointerEvents: comingSoon && !targetUrl ? 'none' : 'auto',
+        pointerEvents: comingSoon ? 'none' : 'auto',
       }}
     >
       <div
         style={{
           borderRadius: '0px',
           overflow: 'hidden',
-          backgroundColor: '#FFFFFF',
-          border: '1px solid rgba(25, 21, 16, 0.2)',
+          backgroundColor: comingSoon ? '#FAF8F5' : '#FFFFFF',
+          border: comingSoon ? '1px dashed rgba(25, 21, 16, 0.25)' : '1px solid rgba(25, 21, 16, 0.2)',
           transition: 'all 0.2s ease',
           display: 'flex',
           flexDirection: 'column',
           height: '340px',
           position: 'relative',
-          cursor: comingSoon && !targetUrl ? 'default' : 'pointer',
+          opacity: comingSoon ? 0.65 : 1,
+          filter: comingSoon ? 'grayscale(45%)' : 'none',
+          cursor: comingSoon ? 'not-allowed' : 'pointer',
         }}
         onMouseEnter={(e) => {
-          if (!comingSoon || targetUrl) {
+          if (!comingSoon) {
             e.currentTarget.style.borderColor = '#191510';
             const arrow = e.currentTarget.querySelector('.card-arrow') as HTMLElement;
             if (arrow) {
@@ -105,21 +107,23 @@ export default function CourseCard({
           }
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(25, 21, 16, 0.2)';
-          const arrow = e.currentTarget.querySelector('.card-arrow') as HTMLElement;
-          if (arrow) {
-            if (isCompleted) {
-              arrow.style.backgroundColor = '#F7F3EA';
-              arrow.style.color = '#3F6B4A';
-              arrow.style.borderColor = '#3F6B4A';
-            } else if (isInProgress) {
-              arrow.style.backgroundColor = '#F7F3EA';
-              arrow.style.color = '#C98A2E';
-              arrow.style.borderColor = '#C98A2E';
-            } else {
-              arrow.style.backgroundColor = '#F7F3EA';
-              arrow.style.color = '#191510';
-              arrow.style.borderColor = 'rgba(25, 21, 16, 0.3)';
+          if (!comingSoon) {
+            e.currentTarget.style.borderColor = 'rgba(25, 21, 16, 0.2)';
+            const arrow = e.currentTarget.querySelector('.card-arrow') as HTMLElement;
+            if (arrow) {
+              if (isCompleted) {
+                arrow.style.backgroundColor = '#F7F3EA';
+                arrow.style.color = '#3F6B4A';
+                arrow.style.borderColor = '#3F6B4A';
+              } else if (isInProgress) {
+                arrow.style.backgroundColor = '#F7F3EA';
+                arrow.style.color = '#C98A2E';
+                arrow.style.borderColor = '#C98A2E';
+              } else {
+                arrow.style.backgroundColor = '#F7F3EA';
+                arrow.style.color = '#191510';
+                arrow.style.borderColor = 'rgba(25, 21, 16, 0.3)';
+              }
             }
           }
         }}
@@ -266,7 +270,7 @@ export default function CourseCard({
           style={{
             height: '45%',
             padding: '1.25rem 1.4rem',
-            backgroundColor: '#FFFFFF',
+            backgroundColor: comingSoon ? '#FAF8F5' : '#FFFFFF',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -279,7 +283,7 @@ export default function CourseCard({
                 margin: '0 0 0.35rem 0',
                 fontSize: '1.2rem',
                 fontWeight: '700',
-                color: '#191510',
+                color: comingSoon ? '#55503F' : '#191510',
                 fontFamily: "'Space Grotesk', sans-serif",
                 lineHeight: '1.25',
                 letterSpacing: '-0.01em',
@@ -303,8 +307,21 @@ export default function CourseCard({
               borderTop: '1px solid rgba(25, 21, 16, 0.12)',
             }}
           >
-            {/* Clean Price or Progress Link */}
-            {isCompleted ? (
+            {/* Clean Price or Progress Link or Coming Soon Text */}
+            {comingSoon ? (
+              <span
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  color: '#9A9284',
+                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                Enrollment Closed
+              </span>
+            ) : isCompleted ? (
               <span
                 style={{
                   fontSize: '0.95rem',
@@ -339,20 +356,22 @@ export default function CourseCard({
               </span>
             )}
 
-            {/* Square Arrow Button */}
+            {/* Square Arrow Button or Disabled Indicator */}
             <div
               className="card-arrow"
               style={{
                 width: '32px',
                 height: '32px',
                 borderRadius: '0px',
-                border: isCompleted
+                border: comingSoon
+                  ? '1px solid rgba(25, 21, 16, 0.15)'
+                  : isCompleted
                   ? '1px solid #3F6B4A'
                   : isInProgress
                   ? '1px solid #C98A2E'
                   : '1px solid rgba(25, 21, 16, 0.3)',
-                backgroundColor: '#F7F3EA',
-                color: isCompleted ? '#3F6B4A' : isInProgress ? '#C98A2E' : '#191510',
+                backgroundColor: comingSoon ? 'transparent' : '#F7F3EA',
+                color: comingSoon ? '#9A9284' : isCompleted ? '#3F6B4A' : isInProgress ? '#C98A2E' : '#191510',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -362,7 +381,7 @@ export default function CourseCard({
                 flexShrink: 0,
               }}
             >
-              →
+              {comingSoon ? '—' : '→'}
             </div>
           </div>
         </div>
@@ -370,3 +389,4 @@ export default function CourseCard({
     </Link>
   );
 }
+

@@ -11,8 +11,13 @@ export default async function AdminLayout({
 }) {
   const session = await getSession();
 
+  if (session && session.role === 'user') {
+    redirect('/dashboard');
+  }
+
   if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
-    redirect('/login?isAdmin=true');
+    // Unauthenticated: render login page directly without extra wrapper div
+    return <>{children}</>;
   }
 
   return (

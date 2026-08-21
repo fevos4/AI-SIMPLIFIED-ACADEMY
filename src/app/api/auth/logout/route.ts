@@ -3,9 +3,9 @@ import { destroySession } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
-    await destroySession();
+    await destroySession(req);
     return NextResponse.json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
     console.error('Error logging out:', error);

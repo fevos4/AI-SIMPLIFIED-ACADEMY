@@ -12,6 +12,10 @@ interface PurchaseItem {
   receipt_url: string | null;
   rejection_reason: string | null;
   created_at: string;
+  bank: string | null;
+  auto_verified: boolean;
+  verify_et_request_id: string | null;
+  verification_status: string | null;
   user: {
     name: string;
     email: string;
@@ -24,6 +28,23 @@ interface PurchaseItem {
 
 interface AdminPurchasesClientProps {
   initialPurchases: PurchaseItem[];
+}
+
+/** Map bank codes to human-readable names */
+function getBankDisplayName(code: string | null): string {
+  if (!code) return 'Unknown';
+  const map: Record<string, string> = {
+    cbe: 'CBE',
+    boa: 'BOA',
+    telebirr: 'Telebirr',
+    mpesa: 'M-Pesa',
+    cbebirr: 'CBE Birr',
+    dashen: 'Dashen',
+    awash: 'Awash',
+    siinqee: 'Siinqee',
+    kaafiebirr: 'Kaafi Ebirr',
+  };
+  return map[code] || code.toUpperCase();
 }
 
 export default function AdminPurchasesClient({ initialPurchases }: AdminPurchasesClientProps) {
@@ -137,7 +158,7 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
           ← Admin Dashboard
         </Link>
         <h1 style={{ marginBottom: '2.5rem', fontSize: '2.2rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.02em' }}>
-          CBE Payment Verification Queue
+          Payment Verification Queue
         </h1>
 
         <div style={{ overflowX: 'auto', border: '1px solid rgba(25, 21, 16, 0.14)', borderRadius: '0px' }}>
@@ -146,7 +167,8 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
               <tr style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid rgba(25, 21, 16, 0.14)' }}>
                 <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Student</th>
                 <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Course Category</th>
-                <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CBE Ref #</th>
+                <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Bank</th>
+                <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Reference #</th>
                 <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Amount</th>
                 <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Payment Receipt</th>
                 <th style={{ padding: '0.9rem 1rem', fontSize: '0.82rem', fontWeight: '600', color: '#191510', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
@@ -170,6 +192,20 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
                     {/* Course Category */}
                     <td style={{ padding: '1rem', color: '#191510' }}>{p.category.name}</td>
 
+                    {/* Bank */}
+                    <td style={{ padding: '1rem', color: '#191510', fontSize: '0.85rem' }}>
+                      <span style={{
+                        padding: '0.2rem 0.5rem',
+                        backgroundColor: '#F7F3EA',
+                        border: '1px solid rgba(25, 21, 16, 0.14)',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        fontFamily: "'IBM Plex Sans', sans-serif",
+                      }}>
+                        {getBankDisplayName(p.bank)}
+                      </span>
+                    </td>
+
                     {/* Reference Number */}
                     <td style={{ padding: '1rem', fontFamily: "'Space Grotesk', monospace", fontWeight: '700', color: '#191510' }}>
                       {p.reference_number}
@@ -180,7 +216,7 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
                       {p.amount_claimed} ETB
                     </td>
 
-                    {/* FIX 1: Payment Receipt Thumbnail & Section */}
+                    {/* Payment Receipt Thumbnail & Section */}
                     <td style={{ padding: '1rem' }}>
                       {p.receipt_url ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
@@ -220,31 +256,81 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
 
                     {/* Status Badge */}
                     <td style={{ padding: '1rem' }}>
-                      <span
-                        style={{
-                          padding: '0.25rem 0.6rem',
-                          borderRadius: '0px',
-                          fontSize: '0.72rem',
-                          fontWeight: '600',
-                          fontFamily: "'IBM Plex Sans', sans-serif",
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          border: isVerified ? '1px solid #3F6B4A' : isPending ? '1px solid #C98A2E' : '1px solid #A63A2C',
-                          color: isVerified ? '#3F6B4A' : isPending ? '#C98A2E' : '#A63A2C',
-                          backgroundColor: '#FFFFFF',
-                          display: 'inline-block',
-                        }}
-                      >
-                        {isPending ? 'PENDING' : p.status.toUpperCase()}
-                      </span>
-                      {isRejected && p.rejection_reason && (
-                        <div style={{ fontSize: '0.78rem', color: '#A63A2C', marginTop: '0.35rem', maxWidth: '180px' }}>
-                          Reason: {p.rejection_reason}
-                        </div>
-                      )}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                        <span
+                          style={{
+                            padding: '0.25rem 0.6rem',
+                            borderRadius: '0px',
+                            fontSize: '0.72rem',
+                            fontWeight: '600',
+                            fontFamily: "'IBM Plex Sans', sans-serif",
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            border: isVerified ? '1px solid #3F6B4A' : isPending ? '1px solid #C98A2E' : '1px solid #A63A2C',
+                            color: isVerified ? '#3F6B4A' : isPending ? '#C98A2E' : '#A63A2C',
+                            backgroundColor: '#FFFFFF',
+                            display: 'inline-block',
+                          }}
+                        >
+                          {isPending ? 'PENDING' : p.status.toUpperCase()}
+                        </span>
+
+                        {/* Auto-Verified Badge */}
+                        {isVerified && p.auto_verified && (
+                          <span
+                            style={{
+                              padding: '0.2rem 0.5rem',
+                              borderRadius: '0px',
+                              fontSize: '0.68rem',
+                              fontWeight: '600',
+                              fontFamily: "'IBM Plex Sans', sans-serif",
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              backgroundColor: '#E8F5E9',
+                              color: '#2E7D32',
+                              border: '1px solid #2E7D32',
+                              display: 'inline-block',
+                            }}
+                          >
+                            ✓ Auto-Verified by verify.et
+                          </span>
+                        )}
+
+                        {/* Pending with verify.et request */}
+                        {isPending && p.verify_et_request_id && (
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              color: '#C98A2E',
+                              fontWeight: '500',
+                            }}
+                          >
+                            Pending verify.et result
+                          </span>
+                        )}
+
+                        {/* Pending without verify.et request */}
+                        {isPending && !p.verify_et_request_id && (
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              color: '#9A9284',
+                              fontWeight: '500',
+                            }}
+                          >
+                            Manual review required
+                          </span>
+                        )}
+
+                        {isRejected && p.rejection_reason && (
+                          <div style={{ fontSize: '0.78rem', color: '#A63A2C', marginTop: '0.1rem', maxWidth: '180px' }}>
+                            Reason: {p.rejection_reason}
+                          </div>
+                        )}
+                      </div>
                     </td>
 
-                    {/* FIX 2: Action Buttons (Approve & Outlined Danger Reject) */}
+                    {/* Action Buttons */}
                     <td style={{ padding: '1rem' }}>
                       {isPending ? (
                         <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
@@ -288,6 +374,8 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
                             Reject
                           </button>
                         </div>
+                      ) : isVerified && p.auto_verified ? (
+                        <span style={{ color: '#3F6B4A', fontSize: '0.85rem', fontWeight: '500' }}>Auto-Verified</span>
                       ) : (
                         <span style={{ color: '#9A9284', fontSize: '0.85rem' }}>Reviewed</span>
                       )}
@@ -300,7 +388,7 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
         </div>
       </main>
 
-      {/* FIX 1: LIGHTBOX MODAL FOR RECEIPT IMAGE */}
+      {/* LIGHTBOX MODAL FOR RECEIPT IMAGE */}
       {activeReceiptUrl && (
         <div
           style={{
@@ -382,7 +470,7 @@ export default function AdminPurchasesClient({ initialPurchases }: AdminPurchase
         </div>
       )}
 
-      {/* FIX 2: REJECT REASON MODAL */}
+      {/* REJECT REASON MODAL */}
       {rejectingPurchase && (
         <div
           style={{

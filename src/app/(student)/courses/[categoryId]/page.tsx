@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
+import { getActiveBankAccounts } from '@/lib/bank-accounts';
 import CourseViewClient from '@/components/CourseViewClient';
 
 export const dynamic = 'force-dynamic';
@@ -44,13 +45,21 @@ export default async function StudentCategoryViewPage({ params }: RouteParams) {
     },
   });
 
-  let userAccessStatus: 'purchased' | 'pending' | 'none' = 'none';
+  let userAccessStatus: 'purchased' | 'pending' | 'rejected' | 'none' = 'none';
+  let rejectionReason: string | null = null;
+
   if (session.role === 'admin' || session.role === 'super_admin') {
     userAccessStatus = 'purchased';
   } else if (purchase) {
     if (purchase.status === 'verified') userAccessStatus = 'purchased';
     else if (purchase.status === 'pending_verification') userAccessStatus = 'pending';
+    else if (purchase.status === 'rejected') {
+      userAccessStatus = 'rejected';
+      rejectionReason = purchase.rejection_reason;
+    }
   }
+
+  const bankAccounts = await getActiveBankAccounts();
 
   const cbeAccountName = process.env.CBE_ACCOUNT_NAME || 'AI Simplified Academy';
   const cbeAccountNumber = process.env.CBE_ACCOUNT_NUMBER || '1000123456789';
@@ -60,6 +69,7 @@ export default async function StudentCategoryViewPage({ params }: RouteParams) {
     name: category.name,
     description: category.description,
     price: Number(category.price),
+    coming_soon: category.coming_soon,
     cover_image_path: category.cover_image_path,
     lessons: category.lessons.map((lesson) => ({
       id: lesson.id,
@@ -88,6 +98,8 @@ export default async function StudentCategoryViewPage({ params }: RouteParams) {
       userAccessStatus={userAccessStatus}
       cbeAccountName={cbeAccountName}
       cbeAccountNumber={cbeAccountNumber}
+      rejectionReason={rejectionReason}
+      bankAccounts={bankAccounts}
     />
   );
 }

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Layers, CreditCard, ShieldCheck, LogOut, Menu } from 'lucide-react';
+import { LayoutDashboard, Layers, CreditCard, ShieldCheck, LogOut, Menu, Landmark } from 'lucide-react';
 
 interface AdminSidebarProps {
   user?: {
@@ -21,12 +21,13 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
     { label: 'Overview', href: '/admin', Icon: LayoutDashboard },
     { label: 'Categories & Curriculum', href: '/admin/categories', Icon: Layers },
     { label: 'Payment Queue', href: '/admin/purchases', Icon: CreditCard },
+    { label: 'Bank Accounts', href: '/admin/bank-accounts', Icon: Landmark },
     ...(user?.role === 'super_admin' ? [{ label: 'Manage Admins', href: '/admin/manage-admins', Icon: ShieldCheck }] : []),
   ];
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/login');
+    router.push('/admin');
     router.refresh();
   };
 

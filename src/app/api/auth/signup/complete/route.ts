@@ -67,7 +67,7 @@ export async function POST(req: Request) {
     await clearSignupVerifiedCookie();
 
     // Auto-login: issue session cookie
-    await createSession(updatedUser.id, updatedUser.role, updatedUser.email);
+    await createSession(updatedUser.id, updatedUser.role, updatedUser.email, req);
 
     return NextResponse.json({
       success: true,

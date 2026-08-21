@@ -1,13 +1,18 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
-import { Layers, CreditCard, ShieldCheck } from 'lucide-react';
+import { Layers, CreditCard, ShieldCheck, Landmark } from 'lucide-react';
+import AdminLoginFormClient from '@/components/AdminLoginFormClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
-  if (!session) return null;
+
+  // If unauthenticated or wrong role, show minimal Admin Login Form
+  if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
+    return <AdminLoginFormClient />;
+  }
 
   const categoryCount = await prisma.courseCategory.count();
   const lessonCount = await prisma.courseLesson.count();
@@ -106,15 +111,42 @@ export default async function AdminDashboardPage() {
                 transition: 'border-color 0.15s ease',
               }}
             >
-              <div style={{ padding: '0.65rem', backgroundColor: pendingPurchaseCount > 0 ? '#F7F3EA' : '#F7F3EA', border: '1px solid rgba(25, 21, 16, 0.14)' }}>
+              <div style={{ padding: '0.65rem', backgroundColor: '#F7F3EA', border: '1px solid rgba(25, 21, 16, 0.14)' }}>
                 <CreditCard width={22} height={22} color={pendingPurchaseCount > 0 ? '#A63A2C' : '#191510'} />
               </div>
               <div>
                 <strong style={{ fontSize: '1.05rem', fontFamily: "'Space Grotesk', sans-serif", display: 'block', marginBottom: '0.25rem' }}>
-                  CBE Payment Queue ({pendingPurchaseCount})
+                  Payment Queue ({pendingPurchaseCount})
                 </strong>
                 <span style={{ fontSize: '0.85rem', color: '#55503F' }}>
                   Review submitted bank receipts, approve enrollments, or issue detailed rejection notices.
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/bank-accounts"
+              style={{
+                padding: '1.5rem',
+                border: '1.5px solid #191510',
+                backgroundColor: '#FFFFFF',
+                textDecoration: 'none',
+                color: '#191510',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '1rem',
+                transition: 'border-color 0.15s ease',
+              }}
+            >
+              <div style={{ padding: '0.65rem', backgroundColor: '#F7F3EA', border: '1px solid rgba(25, 21, 16, 0.14)' }}>
+                <Landmark width={22} height={22} color="#191510" />
+              </div>
+              <div>
+                <strong style={{ fontSize: '1.05rem', fontFamily: "'Space Grotesk', sans-serif", display: 'block', marginBottom: '0.25rem' }}>
+                  Bank Accounts &amp; Payment Methods
+                </strong>
+                <span style={{ fontSize: '0.85rem', color: '#55503F' }}>
+                  Set account numbers, mobile wallet phones, instructions, and toggle which banks appear for students.
                 </span>
               </div>
             </Link>

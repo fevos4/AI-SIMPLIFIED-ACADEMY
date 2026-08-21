@@ -46,8 +46,24 @@ model User {
   uploaded_videos    CourseVideo[]    @relation("VideoUploader")
   purchases          CoursePurchase[] @relation("UserPurchases")
   reviewed_purchases CoursePurchase[] @relation("PurchaseReviewer")
+  sessions           UserSession[]
 
   @@map("users")
+}
+
+model UserSession {
+  id           String   @id @default(uuid()) @db.Uuid
+  user_id      String   @db.Uuid
+  token_hash   String
+  device_hint  String?
+  ip_address   String?
+  created_at   DateTime @default(now()) @db.Timestamptz
+  last_used_at DateTime @default(now()) @db.Timestamptz
+  expires_at   DateTime @db.Timestamptz
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("user_sessions")
 }
 
 model CourseCategory {
@@ -110,21 +126,41 @@ model CourseVideo {
 }
 
 model CoursePurchase {
-  id                 String         @id @default(uuid()) @db.Uuid
-  user_id            String         @db.Uuid
-  category_id        String         @db.Uuid
-  reference_number   String         @unique
-  amount_claimed     Decimal        @db.Decimal
-  receipt_image_path String?
-  status             PurchaseStatus @default(pending_verification)
-  rejection_reason   String?
-  reviewed_by        String?        @db.Uuid
-  reviewed_at        DateTime?      @db.Timestamptz
-  created_at         DateTime       @default(now()) @db.Timestamptz
+  id                    String         @id @default(uuid()) @db.Uuid
+  user_id               String         @db.Uuid
+  category_id           String         @db.Uuid
+  reference_number      String         @unique
+  amount_claimed        Decimal        @db.Decimal
+  receipt_image_path    String?
+  status                PurchaseStatus @default(pending_verification)
+  rejection_reason      String?
+  reviewed_by           String?        @db.Uuid
+  reviewed_at           DateTime?      @db.Timestamptz
+  created_at            DateTime       @default(now()) @db.Timestamptz
+  bank                  String?
+  phone_number          String?
+  verify_et_request_id  String?
+  auto_verified         Boolean        @default(false)
+  verification_status   String?
 
   user     User           @relation("UserPurchases", fields: [user_id], references: [id])
   category CourseCategory @relation(fields: [category_id], references: [id])
   reviewer User?          @relation("PurchaseReviewer", fields: [reviewed_by], references: [id])
 
   @@map("course_purchases")
+}
+
+model BankAccount {
+  id             String   @id @default(uuid()) @db.Uuid
+  bank           String   @unique
+  bank_name      String
+  account_name   String
+  account_number String
+  phone_number   String?
+  instructions   String?
+  is_active      Boolean  @default(true)
+  created_at     DateTime @default(now()) @db.Timestamptz
+  updated_at     DateTime @updatedAt @db.Timestamptz
+
+  @@map("bank_accounts")
 }

@@ -47,6 +47,10 @@ export default async function AdminPurchasesPage() {
         receipt_url,
         rejection_reason: p.rejection_reason,
         created_at: p.created_at.toISOString(),
+        bank: p.bank,
+        auto_verified: p.auto_verified,
+        verify_et_request_id: p.verify_et_request_id,
+        verification_status: p.verification_status,
         user: p.user,
         category: {
           name: p.category.name,

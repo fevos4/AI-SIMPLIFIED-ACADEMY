@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { Edit3, X, Check, DollarSign, AlertCircle } from 'lucide-react';
 
 interface CategoryItem {
   id: string;
@@ -36,6 +37,85 @@ export default function AdminCategoriesClient({ initialCategories }: AdminCatego
   const [editingCoverId, setEditingCoverId] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [uploadError, setUploadError] = useState<Record<string, string | null>>({});
+
+  // Edit Category Modal State
+  const [editingCategory, setEditingCategory] = useState<CategoryItem | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [editPrice, setEditPrice] = useState('');
+  const [editComingSoon, setEditComingSoon] = useState(false);
+  const [savingEdit, setSavingEdit] = useState(false);
+  const [editError, setEditError] = useState<string | null>(null);
+  const [editSuccessMsg, setEditSuccessMsg] = useState<string | null>(null);
+
+  const openEditModal = (cat: CategoryItem) => {
+    setEditingCategory(cat);
+    setEditName(cat.name);
+    setEditDescription(cat.description || '');
+    setEditPrice(String(cat.price));
+    setEditComingSoon(cat.coming_soon);
+    setEditError(null);
+    setEditSuccessMsg(null);
+  };
+
+  const handleSaveCategoryEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCategory) return;
+    if (!editName.trim()) {
+      setEditError('Category name is required');
+      return;
+    }
+    const numPrice = Number(editPrice);
+    if (isNaN(numPrice) || numPrice < 0) {
+      setEditError('Please enter a valid price (>= 0 ETB)');
+      return;
+    }
+
+    setSavingEdit(true);
+    setEditError(null);
+
+    try {
+      const res = await fetch(`/api/admin/categories/${editingCategory.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: editName.trim(),
+          description: editDescription.trim() || null,
+          price: numPrice,
+          coming_soon: editComingSoon,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update category');
+      }
+
+      setCategories((prev) =>
+        prev.map((c) =>
+          c.id === editingCategory.id
+            ? {
+                ...c,
+                name: editName.trim(),
+                description: editDescription.trim() || null,
+                price: numPrice,
+                coming_soon: editComingSoon,
+              }
+            : c
+        )
+      );
+
+      setEditSuccessMsg('Category details and price updated successfully!');
+      setTimeout(() => {
+        setEditingCategory(null);
+        setEditSuccessMsg(null);
+      }, 1200);
+    } catch (err: any) {
+      setEditError(err.message || 'Error updating category');
+    } finally {
+      setSavingEdit(false);
+    }
+  };
 
   const getImageSrc = (path: string | null) => {
     if (!path) return null;
@@ -243,7 +323,7 @@ export default function AdminCategoriesClient({ initialCategories }: AdminCatego
 
             <form onSubmit={handleCreateCategory}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '1.5rem' }}>
-                
+
                 {/* Left Column: Form Inputs */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
                   <div>
@@ -569,9 +649,34 @@ export default function AdminCategoriesClient({ initialCategories }: AdminCatego
                       )}
                     </h3>
 
-                    <p style={{ margin: '0 0 0.85rem 0', color: '#55503F', fontSize: '0.88rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
-                      Price: <strong style={{ color: '#A63A2C', fontFamily: "'Space Grotesk', sans-serif" }}>{Number(cat.price)} ETB</strong> | Lessons: {cat._count.lessons}
-                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', margin: '0 0 0.85rem 0', flexWrap: 'wrap' }}>
+                      <p style={{ margin: 0, color: '#55503F', fontSize: '0.88rem', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+                        Price: <strong style={{ color: '#A63A2C', fontFamily: "'Space Grotesk', sans-serif", fontSize: '1rem' }}>{Number(cat.price)} ETB</strong> | Lessons: {cat._count.lessons}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(cat)}
+                        style={{
+                          background: 'none',
+                          border: '1px solid rgba(25, 21, 16, 0.2)',
+                          padding: '0.2rem 0.55rem',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          color: '#191510',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.3rem',
+                          borderRadius: '0px',
+                          backgroundColor: '#F7F3EA',
+                          fontFamily: "'IBM Plex Sans', sans-serif",
+                        }}
+                        title="Edit Price & Details"
+                      >
+                        <Edit3 width={12} height={12} />
+                        <span>Edit Price</span>
+                      </button>
+                    </div>
 
                     {/* Upload Cover Image Action */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
@@ -611,8 +716,30 @@ export default function AdminCategoriesClient({ initialCategories }: AdminCatego
                     </div>
                   </div>
 
-                  {/* Navigation Action */}
-                  <div style={{ display: 'flex', gap: '0.75rem' }}>
+                  {/* Actions */}
+                  <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(cat)}
+                      style={{
+                        padding: '0.65rem 1rem',
+                        backgroundColor: '#FFFFFF',
+                        color: '#191510',
+                        border: '1.5px solid #191510',
+                        borderRadius: '0px',
+                        fontWeight: '600',
+                        fontSize: '0.85rem',
+                        fontFamily: "'IBM Plex Sans', sans-serif",
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                      }}
+                    >
+                      <Edit3 width={14} height={14} />
+                      <span>Edit Details &amp; Price</span>
+                    </button>
+
                     <Link
                       href={`/admin/categories/${cat.id}`}
                       style={{
@@ -635,6 +762,239 @@ export default function AdminCategoriesClient({ initialCategories }: AdminCatego
           </div>
         </section>
       </main>
+
+      {/* EDIT CATEGORY & PRICE MODAL */}
+      {editingCategory && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 3000,
+            backgroundColor: 'rgba(25, 21, 16, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+          onClick={() => !savingEdit && setEditingCategory(null)}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '520px',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '0px',
+              padding: '2rem',
+              border: '1.5px solid #191510',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+              fontFamily: "'IBM Plex Sans', sans-serif",
+              maxHeight: '90vh',
+              overflowY: 'auto',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid rgba(25, 21, 16, 0.1)', paddingBottom: '0.75rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.3rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif", color: '#191510' }}>
+                Edit Course &amp; Price
+              </h3>
+              <button
+                type="button"
+                onClick={() => setEditingCategory(null)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#191510', padding: '0.25rem' }}
+              >
+                <X width={20} height={20} />
+              </button>
+            </div>
+
+            {editSuccessMsg && (
+              <div
+                style={{
+                  padding: '0.85rem 1rem',
+                  backgroundColor: '#E8F5E9',
+                  border: '1.5px solid #2E7D32',
+                  color: '#2E7D32',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  marginBottom: '1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <Check width={16} height={16} strokeWidth={2.5} />
+                <span>{editSuccessMsg}</span>
+              </div>
+            )}
+
+            {editError && (
+              <div
+                style={{
+                  padding: '0.85rem 1rem',
+                  backgroundColor: '#F7F3EA',
+                  border: '1.5px solid #A63A2C',
+                  color: '#A63A2C',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  marginBottom: '1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <AlertCircle width={16} height={16} />
+                <span>{editError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveCategoryEdit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {/* Category Name */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Course Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  placeholder="e.g. Masterclass: AI Engineering"
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              {/* Price in ETB */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '700', color: '#A63A2C', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Course Price (ETB) *
+                  </label>
+                  <span style={{ fontSize: '0.72rem', color: '#9A9284' }}>
+                    Verify.et checks against this amount
+                  </span>
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    step="1"
+                    value={editPrice}
+                    onChange={(e) => setEditPrice(e.target.value)}
+                    placeholder="e.g. 500"
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      border: '2px solid #A63A2C',
+                      backgroundColor: '#FAF8F5',
+                      color: '#191510',
+                      fontSize: '1.1rem',
+                      fontWeight: '700',
+                      outline: 'none',
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#55503F', marginTop: '0.35rem' }}>
+                  Students purchasing this course must transfer at least this amount for verify.et to automatically approve access.
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '600', color: '#191510', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Description (Optional)
+                </label>
+                <textarea
+                  rows={3}
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  placeholder="Brief summary of what students will learn in this course..."
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    border: '1.5px solid #191510',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    boxSizing: 'border-box',
+                    resize: 'vertical',
+                  }}
+                />
+              </div>
+
+              {/* Coming Soon Toggle */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.5rem 0' }}>
+                <input
+                  type="checkbox"
+                  id="edit_coming_soon"
+                  checked={editComingSoon}
+                  onChange={(e) => setEditComingSoon(e.target.checked)}
+                  style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#191510' }}
+                />
+                <label htmlFor="edit_coming_soon" style={{ fontSize: '0.88rem', fontWeight: '500', color: '#191510', cursor: 'pointer' }}>
+                  Mark as &quot;Coming Soon&quot; (locks purchases)
+                </label>
+              </div>
+
+              {/* Modal Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.75rem', borderTop: '1px solid rgba(25, 21, 16, 0.1)', paddingTop: '1.25rem' }}>
+                <button
+                  type="button"
+                  disabled={savingEdit}
+                  onClick={() => setEditingCategory(null)}
+                  style={{
+                    padding: '0.7rem 1.25rem',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
+                    border: '1px solid #191510',
+                    borderRadius: '0px',
+                    fontWeight: '500',
+                    fontSize: '0.88rem',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    cursor: savingEdit ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingEdit}
+                  style={{
+                    padding: '0.7rem 1.5rem',
+                    backgroundColor: '#191510',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '0px',
+                    fontWeight: '600',
+                    fontSize: '0.88rem',
+                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    cursor: savingEdit ? 'not-allowed' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                  }}
+                >
+                  {savingEdit ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

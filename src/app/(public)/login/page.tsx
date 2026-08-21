@@ -53,10 +53,11 @@ function LoginForm() {
           style={{
             width: '100%',
             maxWidth: '440px',
-            backgroundColor: '#FFFFFF',
+            backgroundColor: '#F7F3EA',
             borderRadius: '0px',
-            border: '1px solid rgba(25, 21, 16, 0.2)',
+            border: '1px solid rgba(25, 21, 16, 0.14)',
             padding: '2.5rem 2rem',
+            boxSizing: 'border-box',
           }}
         >
           <div
@@ -96,7 +97,7 @@ function LoginForm() {
                   padding: '0.85rem 1rem',
                   borderRadius: '0px',
                   border: '1.5px solid #191510',
-                  backgroundColor: '#F7F3EA',
+                  backgroundColor: '#FFFFFF',
                   color: '#191510',
                   fontSize: '0.95rem',
                   outline: 'none',
@@ -127,7 +128,7 @@ function LoginForm() {
                     padding: '0.85rem 2.75rem 0.85rem 1rem',
                     borderRadius: '0px',
                     border: '1.5px solid #191510',
-                    backgroundColor: '#F7F3EA',
+                    backgroundColor: '#FFFFFF',
                     color: '#191510',
                     fontSize: '0.95rem',
                     outline: 'none',
@@ -160,7 +161,7 @@ function LoginForm() {
             </div>
 
             {error && (
-              <div style={{ padding: '0.85rem', backgroundColor: '#F7F3EA', border: '1.5px solid #A63A2C', borderRadius: '0px', color: '#A63A2C', fontSize: '0.88rem', marginBottom: '1.5rem', fontWeight: '500' }}>
+              <div style={{ padding: '0.85rem', backgroundColor: '#FFFFFF', border: '1.5px solid #A63A2C', borderRadius: '0px', color: '#A63A2C', fontSize: '0.88rem', marginBottom: '1.5rem', fontWeight: '500' }}>
                 {error}
               </div>
             )}

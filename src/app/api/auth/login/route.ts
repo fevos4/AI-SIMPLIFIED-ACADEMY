@@ -2,83 +2,128 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { createSession } from '@/lib/auth';
+import { getClientIp, getFailureCount, recordFailure, resetRateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
+
+const LOGIN_WINDOW_SECONDS = 15 * 60; // 15 minutes
+const MAX_LOGIN_FAILURES = 5;
 
 export async function POST(req: Request) {
   try {
     let email = '';
     let password = '';
-    let isAdminContext = false;
     const contentType = req.headers.get('content-type') || '';
 
     if (contentType.includes('application/json')) {
       const body = await req.json();
       email = body.email || '';
       password = body.password || '';
-      isAdminContext = Boolean(body.isAdminContext);
     } else {
       const formData = await req.formData();
       email = (formData.get('email') as string) || '';
       password = (formData.get('password') as string) || '';
-      isAdminContext = formData.get('isAdminContext') === 'true';
+    }
+
+    const clientIp = getClientIp(req);
+    const trimmedEmail = email.trim().toLowerCase();
+    const ipKey = `login_ip_${clientIp}`;
+    const comboKey = `login_combo_${clientIp}_${trimmedEmail}`;
+
+    const ipCheck = getFailureCount(ipKey);
+    const comboCheck = getFailureCount(comboKey);
+
+    if (ipCheck.count >= MAX_LOGIN_FAILURES || comboCheck.count >= MAX_LOGIN_FAILURES) {
+      const retryAfter = Math.max(ipCheck.retryAfterSeconds, comboCheck.retryAfterSeconds, 1);
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          retryAfter,
+          message: 'Too many login attempts. Please try again in 15 minutes.',
+        },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(retryAfter) },
+        }
+      );
     }
 
     if (!email || !password) {
-      if (!contentType.includes('application/json')) {
-        return NextResponse.redirect(new URL('/admin?error=Missing+credentials', req.url), 303);
-      }
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
-
-    const trimmedEmail = email.trim().toLowerCase();
 
     const user = await prisma.user.findUnique({
       where: { email: trimmedEmail },
     });
 
-    if (!user) {
-      if (!contentType.includes('application/json')) {
-        return NextResponse.redirect(new URL('/admin?error=Invalid+credentials', req.url), 303);
+    // Strictly enforce role = 'user'. Reject admin/super_admin with generic error.
+    if (!user || user.role !== 'user') {
+      const ipFail = recordFailure(ipKey, LOGIN_WINDOW_SECONDS);
+      const comboFail = recordFailure(comboKey, LOGIN_WINDOW_SECONDS);
+      const currentFail = Math.max(ipFail.count, comboFail.count);
+      const retryAfter = Math.max(ipFail.retryAfterSeconds, comboFail.retryAfterSeconds, 1);
+
+      if (currentFail >= MAX_LOGIN_FAILURES) {
+        return NextResponse.json(
+          {
+            error: 'Rate limit exceeded',
+            retryAfter,
+            message: 'Too many login attempts. Please try again in 15 minutes.',
+          },
+          {
+            status: 429,
+            headers: { 'Retry-After': String(retryAfter) },
+          }
+        );
       }
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 400 });
+
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
     // Unverified email check
     if (!user.email_verified) {
-      if (!contentType.includes('application/json')) {
-        return NextResponse.redirect(new URL('/admin?error=Email+not+verified', req.url), 303);
-      }
       return NextResponse.json({ error: 'Please verify your email before logging in' }, { status: 400 });
     }
 
-    const isAdminRole = user.role === 'admin' || user.role === 'super_admin';
-
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
-      if (!contentType.includes('application/json')) {
-        return NextResponse.redirect(new URL('/admin?error=Invalid+credentials', req.url), 303);
+      const ipFail = recordFailure(ipKey, LOGIN_WINDOW_SECONDS);
+      const comboFail = recordFailure(comboKey, LOGIN_WINDOW_SECONDS);
+      const currentFail = Math.max(ipFail.count, comboFail.count);
+      const retryAfter = Math.max(ipFail.retryAfterSeconds, comboFail.retryAfterSeconds, 1);
+
+      if (currentFail >= MAX_LOGIN_FAILURES) {
+        return NextResponse.json(
+          {
+            error: 'Rate limit exceeded',
+            retryAfter,
+            message: 'Too many login attempts. Please try again in 15 minutes.',
+          },
+          {
+            status: 429,
+            headers: { 'Retry-After': String(retryAfter) },
+          }
+        );
       }
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 400 });
+
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
+
+    // Successful login resets rate limit counter for IP & combo
+    resetRateLimit(ipKey);
+    resetRateLimit(comboKey);
 
     // Issue session cookie
-    await createSession(user.id, user.role, user.email);
-
-    const redirectUrl = isAdminRole ? '/admin' : '/dashboard';
-
-    if (!contentType.includes('application/json')) {
-      return NextResponse.redirect(new URL(redirectUrl, req.url), 303);
-    }
+    await createSession(user.id, user.role, user.email, req);
 
     return NextResponse.json({
       success: true,
       message: 'Login successful',
       role: user.role,
-      redirectUrl,
+      redirectUrl: '/dashboard',
     });
   } catch (error) {
-    console.error('Error logging in:', error);
+    console.error('Error logging in student:', error);
     return NextResponse.json({ error: 'Failed to log in' }, { status: 500 });
   }
 }

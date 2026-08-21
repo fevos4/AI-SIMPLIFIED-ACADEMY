@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { formatEmbedUrl } from '@/lib/video-utils';
+import { Edit3, X, Check, AlertCircle } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -751,6 +752,74 @@ export default function AdminCurriculumBuilderClient({ category: initialCategory
   const [submittingVideo, setSubmittingVideo] = useState<Record<string, boolean>>({});
   const [videoError, setVideoError] = useState<Record<string, string | null>>({});
 
+  // Category Price & Details Edit State
+  const [showEditPriceModal, setShowEditPriceModal] = useState(false);
+  const [editPriceInput, setEditPriceInput] = useState(String(category.price));
+  const [editNameInput, setEditNameInput] = useState(category.name);
+  const [editDescInput, setEditDescInput] = useState(category.description || '');
+  const [savingCategoryDetails, setSavingCategoryDetails] = useState(false);
+  const [priceModalError, setPriceModalError] = useState<string | null>(null);
+  const [priceModalSuccess, setPriceModalSuccess] = useState<string | null>(null);
+
+  const handleOpenPriceModal = () => {
+    setEditPriceInput(String(category.price));
+    setEditNameInput(category.name);
+    setEditDescInput(category.description || '');
+    setPriceModalError(null);
+    setPriceModalSuccess(null);
+    setShowEditPriceModal(true);
+  };
+
+  const handleSavePriceAndDetails = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editNameInput.trim()) {
+      setPriceModalError('Course name is required');
+      return;
+    }
+    const numPrice = Number(editPriceInput);
+    if (isNaN(numPrice) || numPrice < 0) {
+      setPriceModalError('Please enter a valid price (>= 0 ETB)');
+      return;
+    }
+
+    setSavingCategoryDetails(true);
+    setPriceModalError(null);
+
+    try {
+      const res = await fetch(`/api/admin/categories/${category.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: editNameInput.trim(),
+          description: editDescInput.trim() || null,
+          price: numPrice,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update category price');
+      }
+
+      setCategory((prev) => ({
+        ...prev,
+        name: editNameInput.trim(),
+        description: editDescInput.trim() || null,
+        price: numPrice,
+      }));
+
+      setPriceModalSuccess('Course price and details updated successfully!');
+      setTimeout(() => {
+        setShowEditPriceModal(false);
+        setPriceModalSuccess(null);
+      }, 1200);
+    } catch (err: any) {
+      setPriceModalError(err.message || 'Error updating price');
+    } finally {
+      setSavingCategoryDetails(false);
+    }
+  };
+
   // TASK 1: Category Header Cover Image Upload
   const handleCategoryHeaderCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -1087,9 +1156,32 @@ export default function AdminCurriculumBuilderClient({ category: initialCategory
             <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: '700', fontFamily: "'Space Grotesk', sans-serif" }}>
               {category.name} <span style={{ fontSize: '1.2rem', color: '#6b6151', fontWeight: '500' }}>(Curriculum Builder)</span>
             </h1>
-            <p style={{ margin: '0.35rem 0 0 0', color: '#6b6151', fontSize: '0.95rem' }}>
-              Price: <strong style={{ color: '#A63A2C' }}>{category.price} ETB</strong> | Modules: {category.lessons.length}
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.45rem', flexWrap: 'wrap' }}>
+              <p style={{ margin: 0, color: '#6b6151', fontSize: '0.95rem' }}>
+                Price: <strong style={{ color: '#A63A2C', fontSize: '1.05rem' }}>{category.price} ETB</strong> | Modules: {category.lessons.length}
+              </p>
+              <button
+                type="button"
+                onClick={handleOpenPriceModal}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  backgroundColor: '#ffffff',
+                  color: '#191510',
+                  border: '1px solid #191510',
+                  borderRadius: '4px',
+                  fontSize: '0.8rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
+              >
+                <Edit3 width={12} height={12} />
+                <span>Edit Course Price</span>
+              </button>
+            </div>
           </div>
 
           {/* Cover Image Upload Area */}
@@ -1626,6 +1718,210 @@ export default function AdminCurriculumBuilderClient({ category: initialCategory
                 {togglingPublishId === unpublishTargetLesson.id ? 'Unpublishing...' : 'Yes, Unpublish Lesson'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT PRICE & DETAILS MODAL */}
+      {showEditPriceModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 3000,
+            backgroundColor: 'rgba(25, 21, 16, 0.65)',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+          onClick={() => !savingCategoryDetails && setShowEditPriceModal(false)}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '8px',
+              padding: '2rem',
+              border: '1.5px solid #191510',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+              fontFamily: "'Space Grotesk', sans-serif",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', borderBottom: '1px solid #ecdfc4', paddingBottom: '0.75rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.3rem', fontWeight: '700', color: '#191510' }}>
+                Edit Course Price &amp; Details
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowEditPriceModal(false)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#191510', padding: '0.25rem' }}
+              >
+                <X width={20} height={20} />
+              </button>
+            </div>
+
+            {priceModalSuccess && (
+              <div
+                style={{
+                  padding: '0.75rem 1rem',
+                  backgroundColor: '#E8F5E9',
+                  border: '1.5px solid #2E7D32',
+                  color: '#2E7D32',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  borderRadius: '4px',
+                }}
+              >
+                <Check width={16} height={16} strokeWidth={2.5} />
+                <span>{priceModalSuccess}</span>
+              </div>
+            )}
+
+            {priceModalError && (
+              <div
+                style={{
+                  padding: '0.75rem 1rem',
+                  backgroundColor: '#F7F3EA',
+                  border: '1.5px solid #A63A2C',
+                  color: '#A63A2C',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  marginBottom: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  borderRadius: '4px',
+                }}
+              >
+                <AlertCircle width={16} height={16} />
+                <span>{priceModalError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSavePriceAndDetails} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {/* Course Name */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', color: '#191510', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
+                  Course Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editNameInput}
+                  onChange={(e) => setEditNameInput(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    border: '1.5px solid #191510',
+                    borderRadius: '4px',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              {/* Price */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: '700', color: '#A63A2C', textTransform: 'uppercase' }}>
+                    Course Price (ETB) *
+                  </label>
+                  <span style={{ fontSize: '0.72rem', color: '#6b6151' }}>
+                    Verify.et checks against this amount
+                  </span>
+                </div>
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  step="1"
+                  value={editPriceInput}
+                  onChange={(e) => setEditPriceInput(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    border: '2px solid #A63A2C',
+                    borderRadius: '4px',
+                    backgroundColor: '#FAF8F5',
+                    fontSize: '1.1rem',
+                    fontWeight: '700',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+                <div style={{ fontSize: '0.75rem', color: '#6b6151', marginTop: '0.35rem' }}>
+                  Students must pay at least this amount for verify.et to automatically approve enrollment.
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', color: '#191510', marginBottom: '0.4rem', textTransform: 'uppercase' }}>
+                  Description (Optional)
+                </label>
+                <textarea
+                  rows={3}
+                  value={editDescInput}
+                  onChange={(e) => setEditDescInput(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    border: '1.5px solid #191510',
+                    borderRadius: '4px',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                    resize: 'vertical',
+                  }}
+                />
+              </div>
+
+              {/* Actions */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem', borderTop: '1px solid #ecdfc4', paddingTop: '1.25rem' }}>
+                <button
+                  type="button"
+                  disabled={savingCategoryDetails}
+                  onClick={() => setShowEditPriceModal(false)}
+                  style={{
+                    padding: '0.7rem 1.25rem',
+                    backgroundColor: '#FFFFFF',
+                    color: '#191510',
+                    border: '1px solid #191510',
+                    borderRadius: '6px',
+                    fontWeight: '600',
+                    fontSize: '0.88rem',
+                    cursor: savingCategoryDetails ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingCategoryDetails}
+                  style={{
+                    padding: '0.7rem 1.5rem',
+                    backgroundColor: '#191510',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontWeight: '700',
+                    fontSize: '0.88rem',
+                    cursor: savingCategoryDetails ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  {savingCategoryDetails ? 'Saving...' : 'Save Price & Details'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
